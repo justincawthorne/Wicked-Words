@@ -74,6 +74,7 @@
 			$current 	= $_POST['current_image'];
 			$new 		= $_FILES['new_image'];
 			$image_width = (int)$_POST['image_width'];
+			$image_width = ($image_width > $config['files']['max_image_width']) ? $config['files']['max_image_width'] : $image_width ;
 			$replace_status = replace_image($location, $new, $current, $image_width);
 			if($replace_status == true) {
 				// if there is no thumb let's also upload a thumb
@@ -501,6 +502,9 @@
 		$aside_content .= '<p>'.$upload_status.'</p>';
 	}
 	
+	$max_size = (!empty($config['files']['max_image_size'])) ? get_kb_size($config['files']['max_image_size']).'kb' : 'none' ;
+	$max_width = (!empty($config['files']['max_image_width'])) ? $config['files']['max_image_width'].'px (wider images will be resized)' : 'none' ;
+	
 	$aside_content .= '
 	
 		<form action="'.$action_url.'" method="post" enctype="multipart/form-data" id="upload_image_form">
@@ -531,7 +535,12 @@
 		<p><label for="credit">Credit (optional)</label> 
 			<input name="credit" type="text" size="24"/></p>
 			
-
+		<p>
+			<label>Max image size: '.$max_size.'</label>
+		</p>
+		<p>
+			<label>Max image width: '.$max_width.'</label>
+		</p>
 		
 		<p><input type="submit" name="upload_image" value="upload" /></p>
 	</form>

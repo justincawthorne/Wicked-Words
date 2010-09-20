@@ -349,8 +349,10 @@ ul.file_listing div.file_name {
 	margin-left: 4px;
 }
 ul.file_listing div.file_title {
+	clear: left;	
 	float: left;
-	width: 240px;
+	margin-left: 12px;	
+	width: 252px;
 }
 ul.file_listing div.file_type {
 	float: left;

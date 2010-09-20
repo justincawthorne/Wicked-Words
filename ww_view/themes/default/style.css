@@ -504,7 +504,7 @@ div.full_listing {
 	width: 15%;
 }
 .snippet form {
-
+	overflow: hidden;
 }
 .snippet form#search_form label {
 	display:none;

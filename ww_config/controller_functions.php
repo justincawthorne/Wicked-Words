@@ -455,6 +455,75 @@
 		return false;
 	}
 	
+/**
+ * -----------------------------------------------------------------------------
+ * CACHE
+ * -----------------------------------------------------------------------------
+ */
+
+	function stop_timer($start) {
+		$end = time()+microtime();
+		$elapsed = round($end - $start,4);
+		return "loaded in ".$elapsed." milliseconds";
+	}
+
+	function start_caching($config_cache, $start = '') {
+	    if(empty($start)) {
+	    	$start = time() + microtime();
+	    }
+		if(empty($config_cache)) {
+			$config = get_settings('cache');
+			$config_cache = $config('cache');
+		}
+		$cachedir = WW_ROOT."/ww_files/_cache/";
+		if(is_writeable($cachedir)) {
+			$this_page = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$cachefile = $cachedir.md5($this_page).".".$config_cache['cache_ext'];
+			/*
+			if a list of pages to igore is required check the tutorial at:
+			http://www.addedbytes.com/php/caching-output-in-php/
+			*/
+			$cachefile_created = (@file_exists($cachefile)) ? filemtime($cachefile) : 0 ;
+			clearstatcache();
+			// show the cached file if it hasn't expired
+			if (time() - $config_cache['cache_time'] < $cachefile_created) {
+				readfile($cachefile);
+				echo "
+				<!-- cached page ".stop_timer($start)." -->";
+				exit();
+			} else {
+			// otherwise create a new file and attempt to write-lock it
+				$fp = fopen($cachefile , 'w');
+				if( flock($fp, LOCK_EX)) {
+					ob_start();
+				} else {
+				// if we cant write-lock then show the cached page
+					readfile($cachefile);
+					echo "
+				<!-- file write-locked - showing cached page -->
+				<!-- cached page ".stop_timer($start)." -->";
+					exit();
+				}	
+			}
+			return $fp;
+		} else {
+			return 0;
+		}
+	}
+
+	function end_caching($fp, $start) {
+		if(!empty($fp)) {
+			echo "
+			<!-- this page was cached on ".date('r')."-->
+			<!-- uncached page ".stop_timer($start)." -->";
+			// open the cache file for writing 
+			flock($fp, LOCK_UN); // unlock the file
+			// save the contents of output buffer to the file
+			fwrite($fp, ob_get_contents());
+			fclose($fp);
+			ob_end_flush();
+		}
+	}
 
 /**
  * -----------------------------------------------------------------------------

@@ -24,10 +24,16 @@ if(!file_exists('../ww_config/model_functions.php')) {
 	exit();
 }
 
-include_once('../ww_config/model_functions.php');
-include_once('../ww_config/combined_functions.php');
-include_once('../ww_config/controller_functions.php');
-include_once('../ww_config/view_functions.php');
+// set page loading start time
+
+	$start = time() + microtime();
+
+// load functions
+
+	include_once('../ww_config/model_functions.php');
+	include_once('../ww_config/combined_functions.php');
+	include_once('../ww_config/controller_functions.php');
+	include_once('../ww_config/view_functions.php');
 
 	if (!session_id()) session_start();
 	
@@ -47,6 +53,12 @@ include_once('../ww_config/view_functions.php');
 		echo "
 		".$config['site']['title']." is temporarily closed for maintenance...";
 		exit();		
+	}
+
+// start caching
+	
+	if(!empty($config['cache']['caching_on'])) {
+		$cache_fp = start_caching($config['cache'], $start);
 	}
 	
 // process url
@@ -275,4 +287,10 @@ include_once('../ww_config/view_functions.php');
 		}
 		
 	} // end checking for $_GET['page_name']
+	
+// close caching routine - create file
+
+	if(!empty($config['cache']['caching_on'])) {
+		end_caching($cache_fp, $start);
+	}
 ?>

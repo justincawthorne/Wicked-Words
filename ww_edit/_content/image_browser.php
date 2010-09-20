@@ -49,6 +49,7 @@
 	//include_once(WW_ROOT.'/ww_config/controller_functions.php');
 	include_once(WW_ROOT.'/ww_config/author_controller_functions.php');
 	include_once(WW_ROOT.'/ww_config/author_view_functions.php');
+	include_once(WW_ROOT.'/ww_config/combined_functions.php');
 
 // pagination parameters
 
@@ -195,8 +196,15 @@
 <body>
 
 	<h6>image browser<span id="toggle"><a href="javascript:void(0);">upload</a></span></h6>
-	<?php if(isset($upload_success)) { echo $upload_success; } ?>
+	<?php 
+		if(isset($upload_success)) { echo $upload_success; } 
+		
+		$max_size = (!empty($config['files']['max_image_size'])) ? get_kb_size($config['files']['max_image_size']).'kb' : 'none' ;
+		$max_width = (!empty($config['files']['max_image_width'])) ? $config['files']['max_image_width'].'px (wider images will be resized)' : 'none' ;	
+	?>
 	<form action="<?php echo $url; ?>" method="post" enctype="multipart/form-data" id="image_form" class="hide">
+		
+
 		
 		<p><label for="image_file">Select image</label>
 			<input name="image_file" type="file" size="12" id="image_file"/></p>
@@ -214,6 +222,15 @@
 			<input name="width" type="text" size="3"/>	
 					
 			<input type="submit" name="upload_image" value="upload" /></p>
+			
+		<p>
+			<label>Max image size: <?php echo $max_size; ?></label><br/>
+			<label>Max image width: <?php echo $max_width; ?></label>
+
+		</p>
+		
+			
+			
 	</form>
 	
 <?php

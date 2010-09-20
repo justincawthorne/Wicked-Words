@@ -2330,7 +2330,14 @@
 				return 'image file is too large';
 			}
 			$location = WW_ROOT.'/ww_files/images/';
+			// check posted width
 			$width = (isset($_POST['width'])) ? (int)$_POST['width'] : 0 ;
+			$width = ($width > $config['files']['max_image_width']) ? $config['files']['max_image_width'] : $width ;
+			// check file width
+			if(empty($width)) {
+				list($o_width)= getimagesize($image_file['tmp_name']);
+				$width = ($o_width > $config['files']['max_image_width']) ? $config['files']['max_image_width'] : $width ;
+			}
 			$image_data = resize_image($image_file,$location,'',$width);
 		}
 		// check image was uploaded
