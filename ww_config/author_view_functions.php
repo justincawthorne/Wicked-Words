@@ -748,6 +748,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 					'.$category_select.'
 					<span class="note">or type in a new category below</span>
 					<input type="text" name="category_new" id="category_new" class="unlabelled"/>
+					<input type="hidden" name="category_url" id="category_url" value="'.$article_data['category_url'].'"/>
 				</p>
 				<p>
 					<label for="tags">Tags</label>

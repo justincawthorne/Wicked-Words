@@ -919,10 +919,16 @@
 		// author id
 		$article_data['author_id'] = (int)$_POST['author_id'];
 		
+		// author id
+		$article_data['category_url'] = $_POST['category_url'];
+		
 		// category new
 		if(!empty($_POST['category_new'])) {
 			$new_category = clean_input($_POST['category_new']);
 			$article_data['category_id'] = quick_insert_category($new_category);
+			if(!is_int($article_data['category_id'])) {
+				$article_data['error'][] = $article_data['category_id'];
+			}
 		} else {
 		// category id
 			$article_data['category_id'] = (int)$_POST['category_id'];		
@@ -976,7 +982,12 @@
 			$new_tag = clean_input($_POST['tag_new']);
 			$new_tag_ids = quick_insert_tags($new_tag);
 			foreach($new_tag_ids as $new_id) {
-				$article_data['tags'][] = $new_id;
+				if(is_int($new_id)) {
+					$article_data['tags'][] = $new_id;
+				} else {
+					$article_data['error'][] = $new_id;
+				}
+				
 			}
 		}
 		// any errors
@@ -1913,8 +1924,9 @@
  */
 	
 	function quick_insert_category($category_name) {
-		if(empty($category_name)) {
-			return 0;
+		$check = validate_new_category($category_name);
+		if($check !== true) {
+			return $check;
 		}
 		$conn = author_connect();
 		$category_title = clean_input($category_name);
@@ -1946,6 +1958,10 @@
 		if(!isset($_POST)) {
 			return false;
 		}
+		$check = validate_new_category($_POST['title']);
+		if($check !== true) {
+			return $check;
+		}
 		$conn = author_connect();
 		$title 		= clean_input($_POST['title']);
 		$url 		= create_url_title($title);
@@ -1974,6 +1990,35 @@
 	}
 
 /**
+ * validate_new_category
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */	
+
+	function validate_new_category($title) {
+		// check for content
+		if(empty($title)) {
+			return 'No category title entered';
+		}
+		// check category is not an integer
+		if(is_int($title)) {
+			return 'Category cannot be an integer';
+		}
+		// reserved system terms
+		$reserved = array('author','admin','download','id', 'feeds','feed','podcast','rss','rss-external',
+				'search','sitemap','tag');
+		$title = trim(strtolower($title));
+		if(in_array($title, $reserved)) {
+			return $title.' is a reserved system term and cannot be used as a category';
+		}
+		return true;
+	}
+
+/**
  * update_category
  * 
  * 
@@ -1986,6 +2031,10 @@
 	function update_category($category_id) {
 		if(empty($category_id)) {
 			return false;
+		}
+		$check = validate_new_category($_POST['title']);
+		if($check !== true) {
+			return $check;
 		}
 		$conn = author_connect();
 		// convert csv to array
@@ -2061,14 +2110,19 @@
 		$tags_array = explode(",",$tags_string);
 		$new_tags_id = array();
 		foreach($tags_array as $tag_name) {
-			$tag_title = clean_input($tag_name);
-			$tag_url = create_url_title($tag_title);
-			$insert = "INSERT INTO tags 
-						(title, url)
-						VALUES 
-						('".$tag_title."','".$tag_url."')";
-			$conn->query($insert);
-			$new_tags_id[] = $conn->insert_id;
+			$check = validate_new_tag($tag_name);
+			if($check !== true) {
+				$new_tags_id[] = $check;
+			} else {
+				$tag_title = clean_input($tag_name);
+				$tag_url = create_url_title($tag_title);
+				$insert = "INSERT INTO tags 
+							(title, url)
+							VALUES 
+							('".$tag_title."','".$tag_url."')";
+				$conn->query($insert);
+				$new_tags_id[] = $conn->insert_id;				
+			}
 		}
 		return $new_tags_id;
 	}
@@ -2086,6 +2140,10 @@
 	function insert_tag() {
 		if(!isset($_POST)) {
 			return false;
+		}
+		$check = validate_new_tag($_POST['title']);
+		if($check !== true) {
+			return $check;
 		}
 		$conn = author_connect();
 		// convert csv to array
@@ -2108,6 +2166,34 @@
 	}
 
 /**
+ * validate_new_tag
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */	
+
+	function validate_new_tag($title) {
+		// check for content
+		if(empty($title)) {
+			return 'No tag name entered';
+		}
+		// check category is not an integer
+		if(is_int($title)) {
+			return 'Tag cannot be an integer';
+		}
+		// reserved system terms
+		$reserved = array('author', 'page', 'p', 'tag');
+		$title = trim(strtolower($title));
+		if(in_array($title, $reserved)) {
+			return $title.' is a reserved system term and cannot be used as a tag';
+		}
+		return true;
+	}
+
+/**
  * update_tag
  * 
  * 
@@ -2120,6 +2206,10 @@
 	function update_tag($tag_id) {
 		if(empty($tag_id)) {
 			return false;
+		}
+		$check = validate_new_tag($_POST['title']);
+		if($check !== true) {
+			return $check;
 		}
 		$conn = author_connect();
 		// convert csv to array

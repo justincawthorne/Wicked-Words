@@ -1,8 +1,8 @@
 <?php
 // some variables
 
-	$show_subcategories = 1;
-	$show_filters 		= 1;
+	$show_subcategories = 0;
+	$show_filters 		= 0;
 
 
 // meta tags for head section - slightly different ones for a search results page
