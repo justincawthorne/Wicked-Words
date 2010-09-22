@@ -100,7 +100,7 @@ function show_head($head_content = '', $config = '') {
 		
 	// analytics
 	if(!empty($config['connections']['google_analytics'])) {
-		echo insert_google_analytics($config['analytics']['google_analytics']);		
+		echo insert_google_analytics($config['connections']['google_analytics']);		
 	}
 
 	// close head section

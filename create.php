@@ -315,7 +315,7 @@ include_once('ww_config/model_functions.php');
 	('files', 'allowed_formats', NULL, NULL, 'text', NULL, 'list of file formats allowed as attachments'),
 	('files', 'podcast_formats', 'mp3,mp4,m4a,m4v,mov,aac,pdf', 'mp3,mp4,m4a,m4v,mov,aac,pdf', 'text', NULL, 'list of file formats compatible with podcasts'),	
 	('front', 'article_id', '0', '', 'select', NULL, 'ID of article to be placed permanently on front page. This overrides all other front page settings.'),
-	('front', 'front_list_style', 'intro', 'intro', 'select', 'summary, intro, full', 'How much of each article to display on the front page. Only applicable when latestmonth or per_page is selected as front_view'),
+	('front', 'front_list_style', 'summary', 'summary', 'select', 'summary, intro, full', 'How much of each article to display on the front page. Only applicable when latestmonth or per_page is selected as front_view'),
 	('front', 'page_style', 'per_page', 'per_page', 'select', 'latest_post,latest_month,per_page', 'Display options for the first page of your site'),
 	('layout', 'list_style', 'summary', 'summary', 'select', 'basic,summary,intro,full', 'Display options for results pages (or listings pages)'),
 	('layout', 'main_menu', '0', '0', 'select', 'none,header,navbar,aside', 'Position of main menu: none, at top of page (header); below header (navbar); or in column (aside).'),

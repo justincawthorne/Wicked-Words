@@ -1965,7 +1965,15 @@
 		$conn = author_connect();
 		$title 		= clean_input($_POST['title']);
 		$url 		= create_url_title($title);
-		$parent_id 	= (!empty($_POST['category_id'])) ? (int)$_POST['category_id'] : 0 ;
+		$parent_id = 0;
+		if(!empty($_POST['category_id'])) {
+			$parent_id = (int)$_POST['category_id'];
+			// get url value of parent
+			$query = "SELECT url FROM categories WHERE id = ".$parent_id;
+			$result = $conn->query($query);
+			$row = $result->fetch_assoc();
+			$url = $row['url'].'-'.$url;
+		}
 		$summary 	= (!empty($_POST['summary'])) ? clean_input($_POST['summary']) : '' ;
 		$description = (!empty($_POST['description'])) ? clean_input($_POST['description']) : '' ;
 		$type 		= (!empty($_POST['type'])) ? clean_input($_POST['type']) : '' ;
@@ -2040,7 +2048,15 @@
 		// convert csv to array
 		$title 		= clean_input($_POST['title']);
 		$url 		= (!empty($_POST['update_url'])) ? create_url_title($title) : $_POST['url'] ;
-		$parent_id 	= (!empty($_POST['category_id'])) ? (int)$_POST['category_id'] : 0 ;
+		$parent_id = 0;
+		if(!empty($_POST['category_id'])) {
+			$parent_id = (int)$_POST['category_id'];
+			// get url value of parent
+			$query = "SELECT url FROM categories WHERE id = ".$parent_id;
+			$result = $conn->query($query);
+			$row = $result->fetch_assoc();
+			$url = $row['url'].'-'.$url;
+		}
 		$summary 	= (!empty($_POST['summary'])) ? clean_input($_POST['summary']) : '' ;
 		$description = (!empty($_POST['description'])) ? clean_input($_POST['description']) : '' ;
 		$type 		= (!empty($_POST['type'])) ? clean_input($_POST['type']) : '' ;
