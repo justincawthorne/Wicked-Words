@@ -18,6 +18,7 @@ body {
 	min-height: 100%;
 }
 
+/* header */
 
 #header {
 	position: relative;
@@ -27,20 +28,18 @@ body {
 	margin: 0;
 	/* to prevent header pushing down from page top */
 }
-#header_panel {
-	position: absolute;
-	top: 0;
-	right: 0;
-	text-align: right;
-	width: auto;
-	height: auto;
+#header_content {
+	
+}
+#header_text {
+	
 }
 #header_link {
 	/* positioning only really necessary for IE 6, but doesn't affect other browsers */
 	position: absolute;
 	top: 0;
 	left: 0;
-	height:100%; /*or whatever*/
+	height:100%; /* or whatever */
 	width:100%;
 }
 #header_link p{
@@ -52,11 +51,19 @@ body {
 	display:block;
 	line-height: 140px; /*match to #titlebar height*/
 }
+#header_panel {
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align: right;
+	width: auto;
+	height: auto;
+}
 
+/* content containers */
 
 #content_wrapper {
 	position: relative;
-	/*float: left;*/
 	/* padding-bottom should equal height of footer, 
 	including borders and padding  */
 	padding-bottom: 60px;
@@ -72,12 +79,12 @@ body {
 	float: left;
 	overflow: hidden;
 }
-
 #aside {
 	float:right;
 	width:200px;
 }
 
+/* footer */
 
 #footer{
 	position: relative;

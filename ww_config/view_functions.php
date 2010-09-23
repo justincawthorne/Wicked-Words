@@ -1227,40 +1227,32 @@ function insert_favicon($theme = 'default') {
  */	
 
 	function show_article_comments($article_comments) {
-		echo '<h2><a id="comments"></a>Comments</h2>';
+		echo '
+		<div id="comments_wrapper">
+			<h2><a id="comments"></a>Comments</h2>';
 		if(empty($article_comments)) {
 			echo '<p>no comments</p>';
 		} else {
-			echo '<div id="comments_wrapper">';
 			foreach($article_comments as $comment) {
 
-				$style = (!empty($comment['author_id'])) ? ' author_comment' : '' ;
-				$style = (!empty($comment['reply_id'])) ? ' reply_comment' : '' ;	
+				$author_style = (!empty($comment['author_id'])) ? ' author_comment' : '' ;
+				$reply_style = (!empty($comment['reply_id'])) ? ' reply_comment' : '' ;	
 				echo '
-				<div class="comment'.$style.'" id="comment_wrapper_'.$comment['id'].'">
+			
+			<div class="comment'.$author_style.$reply_style.'" id="comment_wrapper_'.$comment['id'].'">
 				<a id="comment_'.$comment['id'].'"></a>
-					<p class="comment_header">
+				<p class="comment_header">
 					<span class="comment_name">'.$comment['poster_name'].'</span>
 					<span class="comment_date"> '.date('d M Y',strtotime($comment['date_uploaded'])).'</span>
 					<span class="comment_time"> '.date('H:i',strtotime($comment['date_uploaded'])).'</span>
-					</p>';
-				echo (!empty($comment['title'])) ? '<p class="comment_title">'.$comment['title'].'</p>' : '' ;
-				echo '<p class="comment_body">'.$comment['body'].'</p>';
-				// if this isn't already a reply we give the option to reply
-				if(empty($comment['id'])) {
-					// script
-					
-					echo "
-					<script type=\"text/javascript\">
-					/* <![CDATA[ */
-              		window.onload = write_reply_link('".$comment['id']."');
-					/* ]]> */
-					</script>";
-				}
-				echo '</div>';
+				</p>';
+					echo (!empty($comment['title'])) ? '<p class="comment_title">'.$comment['title'].'</p>' : '' ;
+					echo '
+				<p class="comment_body">'.$comment['body'].'</p>
+			</div>';
 			}
-			echo '</div>';
 		}
+		echo '</div>';
 	}
 
 

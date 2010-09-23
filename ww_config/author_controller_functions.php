@@ -884,11 +884,12 @@
 			$article_data['seo_keywords'] 	= '';
 			$article_data['comments_hide'] 	= $config['comments']['site_hide'];
 			$article_data['comments_disable'] = $config['comments']['site_disable'];
-			$article_data['day'] 			= date('d');
-			$article_data['month'] 			= date('m');
-			$article_data['year'] 			= date('Y');
-			$article_data['hour'] 			= date('H');
-			$article_data['minute'] 		= date('i');
+			$now = strtotime(get_mysql_time());
+			$article_data['day'] 			= date('d',$now);
+			$article_data['month'] 			= date('m',$now);
+			$article_data['year'] 			= date('Y',$now);
+			$article_data['hour'] 			= date('H',$now);
+			$article_data['minute'] 		= date('i',$now);
 			
 		}
 		return $article_data;

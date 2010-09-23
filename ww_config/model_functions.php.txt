@@ -181,13 +181,15 @@
 		}
 		// can we set the mysql timezone
 		$conn = author_connect();
-		$set_time = "SET time_zone = '".$tz."'";
+		$set_time = "SET SESSION time_zone = '".$tz."'";
 		$rs_settime = $conn->query($set_time);
-		if(!$rs_settime) { 
-			return false; 
-		}		
-		// adjust php timezone
-		putenv("TZ=".$tz.""); 		
+		$get_time = "SELECT @@session.time_zone AS tz";
+		$rs_gettime = $conn->query($get_time);
+		$row = $rs_gettime->fetch_assoc();
+		if($row['tz'] == $tz) {
+			// adjust php timezone
+			date_default_timezone_set($tz);
+		}
 	}
 
 

@@ -76,3 +76,16 @@
 				label.html('Your comment:')
 		    });
 		});
+
+	// full size image popup
+		
+		$(function(){
+		    $('img.image_thumb').click(function(){
+				var full_img = new Image();
+				full_img.src = this.src.replace('/thumbs','');
+				w = full_img.width + 20;
+				h = full_img.height + 20;
+				window.open(full_img.src,'image','width='+w+',height='+h+',location=no,scrollbars=no,toolbar=no,status=no,titlebar=no');
+		        return false;
+		    });
+		});

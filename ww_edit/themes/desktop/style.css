@@ -97,11 +97,15 @@ hr {
 	font-weight: bold;
 	font-size: 1.5em;
 	margin-bottom: 0;
+	-webkit-text-shadow: 1px 1px 5px #333;
+	-moz-text-shadow: 1px 1px 5px #333;
 	text-shadow: 1px 1px 5px #333;
 }
 #header_text small {
 	font-weight: bold;
 	font-size: 1.0em;
+	-webkit-text-shadow: 1px 1px 1px #333;
+	-moz-text-shadow: 1px 1px 1px #333;
 	text-shadow: 1px 1px 1px #333;
 }
 #header_text small a {
@@ -152,6 +156,8 @@ hr {
 #nav ul#nav_links li a {
 	font-weight: bold;
 	color: #847964;
+	-webkit-text-shadow: -1px -1px 1px #fff;
+	-moz-text-shadow: -1px -1px 1px #fff;
 	text-shadow: -1px -1px 1px #fff;
 }
 #nav ul#nav_links li a:hover {
@@ -617,9 +623,9 @@ ul.comment_listing li div.comment_actions span.delete_link a{
 #main_content form select:focus,
 #main_content form textarea:focus {
 	border-color: #847964;
+	-webkit-box-shadow: inset 2px 2px 4px #ddd;
 	-moz-box-shadow: inset 2px 2px 4px #ddd;
 	box-shadow: inset 2px 2px 4px #ddd;
-
 }
 #main_content form input[readonly] {
 	border: dashed 1px #ccc;
@@ -927,8 +933,15 @@ ul.ui-tabs-nav li.ui-state-default a {
 	border-bottom: none;
 	background-color: #f4f4f4;
 	margin-bottom: -4px;
-	-moz-border-radius: 1px 18px 0px 0px;
+	-webkit-border-top-left-radius: 1px;
+	-webkit-border-top-right-radius: 18px;
+	-moz-border-radius-topleft: 1px;
+	-moz-border-radius-topright: 18px;
+	border-top-left-radius: 1px;
+	border-top-right-radius: 18px;
+	-webkit-box-shadow: inset 1px -1px 12px #ddd;
 	-moz-box-shadow: inset 1px -1px 12px #ddd;
+	box-shadow: inset 1px -1px 12px #ddd;
 }
 ul.ui-tabs-nav li.ui-state-default a:hover {
 	background-color: #fff;
@@ -940,7 +953,9 @@ ul.ui-tabs-nav li.ui-tabs-selected a:hover {
 	background: none;
 	outline: none;
 	color: #666;
+	-webkit-box-shadow: inset 1px 6px 6px #fff;
 	-moz-box-shadow: inset 1px 6px 6px #fff;
+	box-shadow: inset 1px 6px 6px #fff;
 }
 .ui-tabs-panel {
 	display: block;

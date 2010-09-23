@@ -600,7 +600,7 @@
 
 		$query = "	SELECT id 
 					FROM articles 
-					WHERE status = 'P'
+					WHERE status IN ('A','P')
 					AND date_uploaded <= NOW()";
 		// article url
 		if (isset($_GET['article_url'])) {
@@ -1776,7 +1776,6 @@
 		}
 		
 		// clear comment session
-		
 		unset($_SESSION['comment_data']);		
 		if(!empty($form_data['error'])) {
 			return $form_data['error'];
