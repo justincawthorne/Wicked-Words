@@ -58,7 +58,7 @@ if(!file_exists('../ww_config/model_functions.php')) {
 // start caching
 	
 	if(!empty($config['cache']['caching_on'])) {
-		$cache_fp = start_caching($config['cache'], $start);
+		$cache_fp = (!isset($_POST['submit_comment'])) ? start_caching($config['cache'], $start) : 0 ;
 	}
 	
 // process url

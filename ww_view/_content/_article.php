@@ -15,18 +15,23 @@
 	$disable_comments = ($config['comments']['site_disable']) + ($article['comments_disable']);
 	
 	if(empty($disable_comments)) {
-		
+/*
+		// clear cached version of page if it exists
+		if(isset($_POST['submit_comment']))	{
+			
+			$cachedir = WW_ROOT."/ww_files/_cache/";
+			$this_page = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$cachefile = $cachedir.md5($this_page).".".$config['cache']['cache_ext'];
+			if(file_exists($cachefile)) {
+				unlink($cachefile);
+				echo 'file deleted';
+			}		
+		}
+*/
 		$post_errors = (isset($_POST['submit_comment'])) 
 			? validate_comment($config['comments'], $article) 
 			: '' ;
-			
-		// clear cached version of page if it exists
-		$cachedir = WW_ROOT."/ww_files/_cache/";
-		$this_page = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-		$cachefile = $cachedir.md5($this_page).".".$config['cache']['cache_ext'];
-		if(file_exists($cachefile)) {
-			unlink($cachefile);
-		}		
+	
 	}
 	
 // output article

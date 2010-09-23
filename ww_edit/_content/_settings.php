@@ -9,6 +9,15 @@
 
 // get main content
 
+	// clear the cache
+	
+	if(isset($_GET['clearcache'])) {
+	
+		$cache_cleared = clear_cache();
+		$url = str_replace('&clearcache','',$url);
+		$action_url = str_replace('&amp;clearcache','',$action_url);
+	}
+
 	// update settings
 	
 	$messages = '';
@@ -360,7 +369,7 @@
 		<div id="tab_'.$header.'">
 			<span class="messages">'.$messages.'</span>
 			<form method="post" 
-				action="'.$_SERVER["PHP_SELF"].'?'.$_SERVER["QUERY_STRING"].'#tab_'.$header.'" 
+				action="'.$action_url.'#tab_'.$header.'" 
 				class="settings_form" 
 				id="'.$header.'_settings">
 			<h2>'.$header.'</h2>
@@ -409,7 +418,7 @@
 						$main_content .= '
 						<form id="custom_setting_'.$custom_setting['id'].'_form" 
 							method="post" 
-							action="'.$_SERVER["PHP_SELF"].'?'.$_SERVER["QUERY_STRING"].'#tab_custom" 
+							action="'.$action_url.'#tab_custom" 
 							class="settings_form">
 						<p>
 							<input name="property_name" value="'.$custom_setting['property_name'].'" type="text" style="font-weight: bold; color: #847964;text-align: right;"/>
@@ -426,7 +435,7 @@
 	$main_content .= '		
 		<h4>insert a new custom variable</h4>
 		<p>n.b. to insert a custom meta tag use the form in the meta section</p>
-			<form id="custom_insert_form" method="post" action="'.$_SERVER["PHP_SELF"].'?'.$_SERVER["QUERY_STRING"].'#tab_custom" class="settings_form">
+			<form id="custom_insert_form" method="post" action="'.$action_url.'#tab_custom" class="settings_form">
 				<p>
 					<label for="property_name">name</label>
 						<input type="text" name="property_name"/>
@@ -453,8 +462,29 @@
 
 
 // output aside content - into $aside_content variable
+	
+	$aside_content = '';
 
-	$aside_content = '
+	// show current cache
+	
+	$current_cache = cache_size();
+	if(!empty($current_cache['count'])) {
+		$pages_string = ($current_cache['count'] == 1) ? '1 cached page' : $current_cache['count'].' cached pages' ;
+		$aside_content .= '
+		<h4>cache</h4>
+		<p>you have '.$pages_string.' totalling '.$current_cache['size'].'kb &#124; <a href="'.$url.'&amp;clearcache">clear the cache</a></p>';		
+	}
+	
+	// cleared cache results
+	
+	if(isset($cache_cleared)) {
+		$files_string = ($cache_cleared == 1) ? '1 cached page cleared' : $cache_cleared.' cached pages cleared' ;
+		$aside_content .= '
+		<h4>cache cleared</h4>
+		<p>'.$files_string.'</p>';			
+	}
+
+	$aside_content .= '
 		<h4>quick reference</h4>
 		<p>tip: click on a header to jump to that section in the main form</p>';
 	

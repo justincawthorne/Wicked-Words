@@ -311,6 +311,37 @@
 		return $row;		
 	}
 
+/**
+ * -----------------------------------------------------------------------------
+ * CACHE
+ * -----------------------------------------------------------------------------
+ */
+
+	function clear_cache() {
+		$cachedir = WW_ROOT."/ww_files/_cache/";
+		$cache_files = get_files($cachedir);
+		$cleaned = 0;
+		foreach($cache_files as $clean_file) {
+			if(file_exists($cachedir.$clean_file['filename'])) {
+				unlink($cachedir.$clean_file['filename']);
+				$cleaned = $cleaned + 1;
+			}
+		}
+		return $cleaned;
+	}
+	
+	function cache_size() {
+		$cachedir = WW_ROOT."/ww_files/_cache/";
+		$cache_files = get_files($cachedir);
+		$totalsize = 0;
+		foreach($cache_files as $cached_file) {
+			$totalsize += $cached_file['size'];
+		}
+		$cache = array();
+		$cache['size'] 	= get_kb_size($totalsize);
+		$cache['count'] = count($cache_files);
+		return $cache;
+	}
 
 /**
  * -----------------------------------------------------------------------------
@@ -845,6 +876,7 @@
 			$article_data['status'] 		= 'D';
 			$article_data['author_id'] 		= $_SESSION[WW_SESS]['user_id'];
 			$article_data['category_id'] 	= 0;
+			$article_data['category_url']	= '';
 			$article_data['tags']			= array();
 			$article_data['attachments']	= array();
 			$article_data['seo_title'] 		= '';
@@ -1065,6 +1097,7 @@
 				$conn->query($update);
 				setcookie("autosave_new", "", time()-3600, "/"); // 30 minutes	
 			}
+			clear_cache();
 			return $result;	
 		}
 
@@ -1120,6 +1153,7 @@
 			if(isset($_COOKIE[$autosave_cookie])) {
 				setcookie($autosave_cookie, "", time()-3600, "/"); // 30 minutes	
 			}
+			clear_cache();
 			return $result;	
 		}
 
@@ -1227,6 +1261,7 @@
 		if(!$result) {
 			return $conn->error;
 		} else {
+			clear_cache();
 			return true;
 		}		
 	}
@@ -1493,6 +1528,7 @@
 			return $conn->error;
 		} else {
 			unset($_POST);
+			clear_cache();
 			$url = $_SERVER["PHP_SELF"].'?page_name=comments';
 			header('Location: '.$url);
 		}
@@ -1521,6 +1557,7 @@
 		if(!$result) {
 			return $conn->error;
 		} else {
+			clear_cache();
 			return true;
 		}
 	}
@@ -1547,6 +1584,7 @@
 		if(!$result) {
 			return $conn->error;
 		} else {
+			clear_cache();
 			return true;
 		}		
 	}
@@ -1799,6 +1837,7 @@
 		if(!$update_result) {
 			return $conn->error;
 		} else {
+			clear_cache();
 			// get config settings
 			$config = get_settings();
 			// send an email to the user
@@ -2072,6 +2111,7 @@
 		if(!$result) {
 			return $conn->error;
 		} else {
+			clear_cache();
 			return true;
 		}		
 	}
@@ -2241,6 +2281,7 @@
 		if(!$result) {
 			return $conn->error;
 		} else {
+			clear_cache();
 			return true;
 		}		
 	}
@@ -2272,6 +2313,7 @@
 		if(!$result_c) {
 			return $conn->error;
 		} else {
+			clear_cache();
 			return true;
 		}
 	}

@@ -473,7 +473,7 @@
 	    }
 		if(empty($config_cache)) {
 			$config = get_settings('cache');
-			$config_cache = $config('cache');
+			$config_cache = $config['cache'];
 		}
 		$cachedir = WW_ROOT."/ww_files/_cache/";
 		if(is_writeable($cachedir)) {
@@ -525,6 +525,19 @@
 		}
 	}
 
+	function clear_cached_page($config_cache = '') {
+		if(empty($config_cache)) {
+			$config = get_settings('cache');
+			$config_cache = $config['cache'];
+		}
+		$current = current_url();
+		// clear cached article page
+		$cachedir = WW_ROOT."/ww_files/_cache/";
+		$cachefile = $cachedir.md5($current).".".$config_cache['cache_ext'];
+		if(file_exists($cachefile)) {
+			unlink($cachefile);
+		}
+	}
 /**
  * -----------------------------------------------------------------------------
  * DETECTION
@@ -562,7 +575,6 @@
 		}
 		return false;	
 	}
-
 
 /**
  * -----------------------------------------------------------------------------
@@ -1013,6 +1025,8 @@
 		}
 		$conn = reader_connect();
 		// sanitize search term
+		$term = trim($term);
+		$term = (strlen($term) < 4) ? $term.'*' : $term ;
 		$safe_term = $conn->real_escape_string($term);
 		// build query
 		$query = "SELECT
@@ -1037,7 +1051,7 @@
 				FROM articles 
 					LEFT JOIN authors ON articles.author_id = authors.id 
 					LEFT JOIN categories ON articles.category_id = categories.id 
-				WHERE status = 'P'
+				WHERE status IN ('A','P')
 					AND date_uploaded <= NOW()
 					AND MATCH (articles.title, articles.summary, articles.body) 
 						AGAINST ('".$safe_term."' in boolean mode) 
@@ -1852,7 +1866,8 @@
 				$mail->MsgHTML($html_body);
 				$mail->Send();
 			}
-			$reload = current_url();
+			clear_cached_page();
+			$reload = current_url();		
 			header('Location: '.$reload);
 			return true;
 		}

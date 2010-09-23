@@ -71,7 +71,8 @@ body {
 	position: relative;
 	clear: both;
 	margin: 0 auto;
-	width: 100%;
+	/*width: 100%;*/
+	min-width: 960px;
 	margin-top: -60px;
 	height: 60px;
 	text-align: center;

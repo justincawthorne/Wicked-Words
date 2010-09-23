@@ -175,7 +175,9 @@
 
 // output main content - into $main_content variable
 
-	$main_content = show_page_header('Comments', $right_text);;
+	$left_text = (isset($_GET['comment_id'])) ? '<a href="'.$_SERVER["PHP_SELF"].'?page_name=comments">Comments</a>' : 'Comments' ;
+
+	$main_content = show_page_header($left_text, $right_text);;
 	$main_content .= (isset($initial_content)) ? $initial_content : '' ;
 	$main_content .= build_admin_comment_listing($comments);
 	
