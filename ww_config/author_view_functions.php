@@ -656,10 +656,15 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 	function form_article_tab($article_data) {
 		
 		// link outout
-		if(isset($article_data['link'])) {
-			$link = '<p><span class="note">'.$article_data['link'].'</span></p>';
-		} else {
-			$link = '';
+		$link = (isset($article_data['link'])) ? '<strong>url:</strong> '.$article_data['link'] : '';
+		
+		// published date
+		$published = ($article_data['status'] != 'D') 
+			? '<br/><strong>published:</strong> '.date('j M Y \a\t H:i',$article_data['date_ts']).' (local) -- '.gmdate('j M Y \a\t H:i',$article_data['date_ts']).' (GMT)'
+			: '' ;
+		
+		if( (!empty($link)) || (!empty($published)) ) {
+			$details = '<p><span class="note">'.$link.$published.'</span></p>';
 		}
 		
 		// authors
@@ -726,7 +731,8 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		$html = '
 			<div id="tab_article">
 
-					'.$link.'
+					'.$details.'
+					
 				<p>
 					<label for="title">Title</label>
 					<input type="text" name="title" title="type article title" value="'.$article_data['title'].'" />
