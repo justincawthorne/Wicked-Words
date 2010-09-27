@@ -601,7 +601,7 @@
 		$query = "	SELECT id 
 					FROM articles 
 					WHERE status IN ('A','P')
-					AND date_uploaded <= NOW()";
+					AND date_uploaded <= UTC_TIMESTAMP()";
 		// article url
 		if (isset($_GET['article_url'])) {
 			$query .= " AND url LIKE '".$conn->real_escape_string($_GET['article_url'])."'";
@@ -739,7 +739,7 @@
 					FROM articles
 					LEFT JOIN authors ON articles.author_id = authors.id
 					WHERE articles.status = 'P'
-					AND articles.date_uploaded <= NOW()
+					AND articles.date_uploaded <= UTC_TIMESTAMP()
 					GROUP BY authors.id
 					ORDER BY title";
 		$result = $conn->query($query);
@@ -797,7 +797,7 @@
 			FROM categories
 				LEFT JOIN articles ON articles.category_id = categories.id
 			WHERE articles.status = 'P'
-				AND articles.date_uploaded <= NOW()
+				AND articles.date_uploaded <= UTC_TIMESTAMP()
 			GROUP BY categories.id 
 				ORDER BY categories.url";	
 		$result = $conn->query($query);
@@ -838,7 +838,7 @@
 					LEFT JOIN tags_map on tag_id = tags.id
 					LEFT JOIN articles ON tags_map.article_id = articles.id
 					WHERE articles.status = 'P'
-					AND articles.date_uploaded <= NOW()
+					AND articles.date_uploaded <= UTC_TIMESTAMP()
 					GROUP BY tags.id
 					ORDER BY title";
 		$result = $conn->query($query);
@@ -871,7 +871,7 @@
 					COUNT(title) as total
 				FROM articles
 					WHERE status = 'P'
-					AND date_uploaded <= NOW()
+					AND date_uploaded <= UTC_TIMESTAMP()
 				GROUP BY CONCAT(MONTHNAME(date_uploaded),' ',YEAR(date_uploaded))
 				ORDER BY date_uploaded DESC";
 		$result = $conn->query($query);
@@ -1052,7 +1052,7 @@
 					LEFT JOIN authors ON articles.author_id = authors.id 
 					LEFT JOIN categories ON articles.category_id = categories.id 
 				WHERE status IN ('A','P')
-					AND date_uploaded <= NOW()
+					AND date_uploaded <= UTC_TIMESTAMP()
 					AND MATCH (articles.title, articles.summary, articles.body) 
 						AGAINST ('".$safe_term."' in boolean mode) 
 					HAVING score > 0 
@@ -1102,7 +1102,7 @@
 			$query .= " LEFT JOIN tags_map ON tags_map.article_id = articles.id";
 		}
 		$query .= " WHERE status = 'P'
-					AND date_uploaded <= NOW()";
+					AND date_uploaded <= UTC_TIMESTAMP()";
 		// author id
 		if (isset($_GET['author_id'])) {
 			$query .= " AND articles.author_id = ".(int)$_GET['author_id'];
@@ -1178,9 +1178,15 @@
 		while($row = $result->fetch_assoc()) {
 			$row = stripslashes_deep($row);
 			
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
+			
 			// create links
 			$row['link'] = ($config_layout['url_style'] == 'blog') 
-				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($row['date_uploaded'])).'/'.$row['url'].'/'
+				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',$row['date_ts']).'/'.$row['url'].'/'
 				: WW_REAL_WEB_ROOT.'/'.$row['category_url'].'/'.$row['url'].'/';
 		
 			// do we need a summary?
@@ -1266,7 +1272,7 @@
 					LEFT JOIN authors ON articles.author_id = authors.id 
 					LEFT JOIN categories ON articles.category_id = categories.id 
 				WHERE articles.status = 'P'
-					AND articles.date_uploaded <= NOW()
+					AND articles.date_uploaded <= UTC_TIMESTAMP()
 					AND attachments.ext IN (".$formats.")";
 		// category url
 		if (isset($_GET['category_id'])) {
@@ -1279,6 +1285,13 @@
 		$data = array();
 		while($row = $result->fetch_assoc()) {
 			$row = stripslashes_deep($row);
+			
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
+			
 			// do we need a summary?
 			if( (empty($row['summary'])) && ($config_layout['list_style'] == 'summary') ) {
 				$row['summary'] = create_summary($row['body']);
@@ -1291,7 +1304,7 @@
 			}
 			// create links
 			$link = ($config_layout['url_style'] == 'blog') 
-				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($row['date_uploaded'])).'/'.$row['url'].'/'
+				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',$row['date_ts']).'/'.$row['url'].'/'
 				: WW_REAL_WEB_ROOT.'/'.$row['category_url'].'/'.$row['url'].'/';
 			$row['link'] = $link;
 			$row['itunes_link'] = WW_WEB_ROOT.'/download/'.$row['ext'].'/'.$row['filename'];
@@ -1433,7 +1446,7 @@
 					LEFT JOIN categories ON articles.category_id = categories.id
 					LEFT JOIN categories AS parent ON categories.category_id = parent.id
 				WHERE articles.status IN('P','A')
-					AND articles.date_uploaded <= NOW()";
+					AND articles.date_uploaded <= UTC_TIMESTAMP()";
 		$query .= (!empty($article_id)) 
 			?  " AND articles.id = ".$article_id 
 			: " ORDER BY articles.id DESC LIMIT 0,1" ;
@@ -1442,13 +1455,18 @@
 		$row = $result->fetch_assoc();
 		$row = stripslashes_deep($row);
 		$result->close();
+		// adjust times to local timezone if necessary
+		$ts = strtotime($row['date_uploaded']);
+		$offset = date('Z');
+		$row['date_ts'] = $ts+$offset;
+		$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
 		// fix relative urls
 		$row['body'] = convert_relative_urls($row['body']);
 		// check pagination
 		$row['pages'] = paginate_article_body($row['body']);
 		$row['total_pages'] = count($row['pages']);
 		// create links
-		$row['link']['blog'] = WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($row['date_uploaded'])).'/'.$row['url'].'/';
+		$row['link']['blog'] = WW_REAL_WEB_ROOT.'/'.date('Y/m/d',$row['date_ts']).'/'.$row['url'].'/';
 		$row['link']['cms'] = WW_REAL_WEB_ROOT.'/'.$row['category_url'].'/'.$row['url'].'/';
 		// get tags
 		$tags = get_article_tags($article_id);
@@ -1518,6 +1536,11 @@
 		$data = array();
 		while($row = $result->fetch_assoc()) { 
 			$row = stripslashes_deep($row);
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
 			$data[$row['id']] = $row;
 		}
 		return $data;		
@@ -1551,6 +1574,12 @@
 		$data = array();
 		while($row = $result->fetch_assoc()) { 
 			$row = stripslashes_deep($row);
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
+			// format text
 			$type = (!empty($row['author_id'])) ? '[AUTHOR] ' : '';
 			$type = (!empty($row['reply_id'])) ? $type.'[REPLY] ' : $type ;
 			$row['title'] = (!empty($row['title'])) ? $row['title'] : 're: '.$row['article_title'] ;
@@ -1636,7 +1665,7 @@
 		$form_data = array();
 		// recreate token values
 		$salt = $_SESSION['comment_data']['salt'];
-		$now = date('Ymdh');
+		$now = gmdate('Ymdh');
 		$token_name = md5($article['id'].$now.$salt);
 		$token_value = md5($salt.$now.$article['id']);
 	
@@ -1662,7 +1691,7 @@
 			unset($_SESSION['comment_data'][$token_name]);
 		// one hour's grace
 		} else {
-			$prev_now = date('Ymdh',strtotime('1 hour ago'));
+			$prev_now = gmdate('Ymdh',strtotime('1 hour ago'));
 			$prev_name = md5($article_id.$prev_now.$salt);
 			$prev_value = md5($salt.$prev_now.$article_id);
 			if(isset($_SESSION['comment_data'][$prev_name]))  {
@@ -1765,7 +1794,7 @@
 		// others
 		
 		$form_data['poster_IP'] = $_SERVER['REMOTE_ADDR'];
-		$form_data['date_uploaded'] = date('Y-m-d H:i:s');
+		$form_data['date_uploaded'] = gmdate('Y-m-d H:i:s');
 		$form_data['author_id'] = (isset($_SESSION['ad_user_id'])) ? (int)$_SESSION['ad_user_id'] : 0 ;
 		
 		// data for comment approval email
@@ -2206,7 +2235,7 @@
 		$query = "	SELECT id 
 					FROM articles
 					WHERE status = 'P'
-					AND date_uploaded <= NOW()";
+					AND date_uploaded <= UTC_TIMESTAMP()";
 		// author id
 		if (isset($_GET['author_id'])) {
 			$query .= " AND author_id = ".(int)$_GET['author_id'];

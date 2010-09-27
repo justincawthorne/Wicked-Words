@@ -445,8 +445,14 @@
 		$data = array();
 		while($row = $result->fetch_assoc()) {
 			$row = stripslashes_deep($row);
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
+			// add status and style
+			$row['style'] = ($row['date_ts'] > time()) ? 'postdated' : $status[$row['status']];
 			// add page counts
-			$row['style'] = (strtotime($row['date_uploaded']) > time()) ? 'postdated' : $status[$row['status']];
 			$row['total_pages'] = $total_pages;
 			$row['total_found'] = $total_articles;
 			$data[] = $row;
@@ -851,12 +857,11 @@
 			$article_data = get_article_admin($article_id);
 			$article_data = stripslashes_deep($article_data);
 			// date fields - probably don't need these
-			$article_data_ts = strtotime($article_data['date_uploaded']);
-			$article_data['day'] 	= date('d',$article_data_ts);
-			$article_data['month'] 	= date('m',$article_data_ts);
-			$article_data['year'] 	= date('Y',$article_data_ts);
-			$article_data['hour'] 	= date('H',$article_data_ts);
-			$article_data['minute'] = date('i',$article_data_ts);
+			$article_data['day'] 	= date('d',$article_data['date_ts']);
+			$article_data['month'] 	= date('m',$article_data['date_ts']);
+			$article_data['year'] 	= date('Y',$article_data['date_ts']);
+			$article_data['hour'] 	= date('H',$article_data['date_ts']);
+			$article_data['minute'] = date('i',$article_data['date_ts']);
 			// tags
 			$article_data['tags']			= get_article_tags_admin($article_id);
 			// attachments
@@ -884,7 +889,8 @@
 			$article_data['seo_keywords'] 	= '';
 			$article_data['comments_hide'] 	= $config['comments']['site_hide'];
 			$article_data['comments_disable'] = $config['comments']['site_disable'];
-			$now = strtotime(get_mysql_time());
+			// $now = strtotime(get_mysql_time());
+			$now = time();
 			$article_data['day'] 			= date('d',$now);
 			$article_data['month'] 			= date('m',$now);
 			$article_data['year'] 			= date('Y',$now);
@@ -909,6 +915,7 @@
 		$article_data['error'] = array();
 		// set status - archive, draft, published, withdrawn
 		$status_list = array('A','D','P','W');
+		$article_data = $_POST;
 		if(isset($_POST['draft'])) {
 			$article_data['status'] =  'D';
 		} else {
@@ -926,6 +933,7 @@
 		if( (isset($_POST['title'])) && (!empty($_POST['title'])) ) {
 			$article_data['title'] = clean_input($_POST['title']);
 		} else {
+			$article_data['title'] = 'New article';
 			$article_data['error'][] = "No title entered";
 		}
 		
@@ -976,22 +984,24 @@
 		if(isset($_POST['date_uploaded'])) {
 			$article_data['date_uploaded'] = $_POST['date_uploaded'];
 		} else {
-			$year 	= (empty($_POST['year'])) 	? date('Y') : $_POST['year'] ;
-			$month 	= (empty($_POST['month'])) 	? date('m') : $_POST['month'] ;
-			$day 	= (empty($_POST['day'])) 	? date('d')	: $_POST['day'] ;
-			$hour 	= (empty($_POST['hour'])) 	? date('H') : $_POST['hour'] ;
-			$minute = (empty($_POST['minute'])) ? date('i') : $_POST['minute'] ;
-			$article_data['date_uploaded'] = $year."-".$month."-".$day." ".$hour.":".$minute.":00";
+			$year 	= (empty($_POST['year'])) 	? gmdate('Y') : $_POST['year'] ;
+			$month 	= (empty($_POST['month'])) 	? gmdate('m') : $_POST['month'] ;
+			$day 	= (empty($_POST['day'])) 	? gmdate('d') : $_POST['day'] ;
+			$hour 	= (empty($_POST['hour'])) 	? gmdate('H') : $_POST['hour'] ;
+			$minute = (empty($_POST['minute'])) ? gmdate('i') : $_POST['minute'] ;
+			// calculate GMT timestamp
+			$ts_uploaded = strtotime($year."-".$month."-".$day." ".$hour.":".$minute.":00");
+			$article_data['date_uploaded'] = gmdate('Y-m-d H:i:s', $ts_uploaded);
 			// just to avoid messy errors we'll resend the date/time variables again
-			$article_data['year'] 	= $year;
-			$article_data['month'] 	= $month;
-			$article_data['day'] 	= $day;
-			$article_data['hour'] 	= $hour;
-			$article_data['minute'] = $minute;
+			$article_data['year'] 	= $_POST['year'];
+			$article_data['month'] 	= $_POST['month'];
+			$article_data['day'] 	= $_POST['day'];
+			$article_data['hour'] 	= $_POST['hour'];
+			$article_data['minute'] = $_POST['minute'];
 		}
 		
 		// date ammended
-		$article_data['date_amended'] = date('Y-m-d H:i:s');
+		$article_data['date_amended'] = gmdate('Y-m-d H:i:s');
 		
 		// seo data
 		$article_data['seo_title'] = (isset($_POST['seo_title'])) ? clean_input($_POST['seo_title']) : '' ;
@@ -1031,6 +1041,7 @@
 				return update_article($article_data);
 			}
 		} else {
+			$article_data['status'] =  'D';
 			return stripslashes_deep($article_data);
 		}
 	}
@@ -1427,6 +1438,11 @@
 		// build array
 		$data = array();
 		while($row = $result->fetch_assoc()) { 
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
 			$row['total_pages'] = $total_pages;
 			$row['total_found'] = $total_comments;
 			$row['link'] = $_SERVER["PHP_SELF"].'?page_name=comments&comment_id='.$row['id'];
@@ -1518,7 +1534,7 @@
 						".(int)$_POST['article_id'].",
 						'".$conn->real_escape_string($_POST['title'])."',
 						'".$conn->real_escape_string($_POST['body'])."',
-						'".$conn->real_escape_string(date('Y-m-d H:i:s'))."',
+						'".$conn->real_escape_string(gmdate('Y-m-d H:i:s'))."',
 						'".$conn->real_escape_string($_SESSION[WW_SESS]['name'])."',
 						'".$conn->real_escape_string(WW_WEB_ROOT)."',
 						'".$conn->real_escape_string($_SESSION[WW_SESS]['email'])."',
@@ -2360,6 +2376,11 @@
 		$url = WW_REAL_WEB_ROOT.'/ww_files/images/';
 		while($row = $result->fetch_assoc()) {
 			$row = stripslashes_deep($row);
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
 			$row['total_images'] = $total_images;
 			$row['total_pages'] = $total_pages;
 			$row['src'] = $url.$row['filename'];
@@ -2441,6 +2462,11 @@
 		}
 		// get image url
 		$url = WW_REAL_WEB_ROOT.'/ww_files/images/';
+		// adjust times to local timezone if necessary
+		$ts = strtotime($row['date_uploaded']);
+		$offset = date('Z');
+		$row['date_ts'] = $ts+$offset;
+		$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
 		// add to array
 		$row['src'] = $url.$row['filename'];
 		$row['thumb_src'] = $url.'thumbs/'.$row['filename'];
@@ -2544,7 +2570,7 @@
 				'".$conn->real_escape_string($image_data['ext'])."',
 				'".$conn->real_escape_string($image_data['mime'])."',
 				".(int)$image_data['size'].",
-				'".$conn->real_escape_string(date('Y-m-d H:i:s'))."')";
+				'".$conn->real_escape_string(gmdate('Y-m-d H:i:s'))."')";
 		$result = $conn->query($query);
 		$new_id = $conn->insert_id;
 		if(!$result) {
@@ -2707,6 +2733,11 @@
 		$data = array();
 		$url = WW_REAL_WEB_ROOT.'/ww_files/attachments/';
 		while($row = $total_result->fetch_assoc()) {
+			// adjust times to local timezone if necessary
+			$ts = strtotime($row['date_uploaded']);
+			$offset = date('Z');
+			$row['date_ts'] = $ts+$offset;
+			$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
 			$row['total_files'] = $total_files;
 			$row['total_pages'] = $total_pages;			
 			$row['src'] = $url.$row['ext'].'/'.$row['filename'];
@@ -2782,6 +2813,11 @@
 				WHERE attachments.id = ".(int)$attachment_id;
 		$result = $conn->query($query);
 		$row = $result->fetch_assoc();
+		// adjust times to local timezone if necessary
+		$ts = strtotime($row['date_uploaded']);
+		$offset = date('Z');
+		$row['date_ts'] = $ts+$offset;
+		$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
 		$row['src'] = WW_WEB_ROOT.'/ww_files/attachments/'.$row['ext'].'/'.$row['filename'];
 		return $row;		
 	}
@@ -2872,7 +2908,7 @@
 				'".$conn->real_escape_string($file_data['ext'])."',
 				'".$conn->real_escape_string($file_data['mime'])."',
 				".(int)$file_data['size'].",
-				'".$conn->real_escape_string(date('Y-m-d H:i:s'))."')";
+				'".$conn->real_escape_string(gmdate('Y-m-d H:i:s'))."')";
 		$result = $conn->query($query);
 		if(!$result) {
 			unlink($location.$file_data['filename']);
@@ -2914,7 +2950,7 @@
 				'".$conn->real_escape_string($attachment_data['ext'])."',
 				'".$conn->real_escape_string($attachment_data['mime'])."',
 				".(int)$attachment_data['size'].",
-				'".$conn->real_escape_string(date('Y-m-d H:i:s'))."')";
+				'".$conn->real_escape_string(gmdate('Y-m-d H:i:s'))."')";
 		$result = $conn->query($query);
 		$new_id = $conn->insert_id;
 		if(!$result) {

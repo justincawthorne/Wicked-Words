@@ -31,11 +31,13 @@
 
 	$user_article_stats = get_articles_stats(1);
 	$user_comment_stats = get_comments_stats($_SESSION[WW_SESS]['user_id']);
-	$user_new_comments = get_new_comments($_SESSION[WW_SESS]['user_id']);	
+	$user_new_comments = get_new_comments($_SESSION[WW_SESS]['user_id']);
+
 	
 	if(!empty($user_article_stats)) {
-		$first_user_post = $user_article_stats['P']['first_post'];
-		$last_user_post = $user_article_stats['P']['last_post'];		
+		$first_user_post = (isset($user_article_stats['P'])) ? $user_article_stats['P']['first_post'] : '' ;
+		$last_user_post = (isset($user_article_stats['P'])) ? $user_article_stats['P']['last_post'] : '' ;
+		$total_user_post = (isset($user_article_stats['P'])) ? $user_article_stats['P']['total'] : '0' ;		
 	}
 		
 	unset($_GET['author_id']);
@@ -51,8 +53,9 @@
 		$all_article_stats = get_articles_stats();
 		
 		if(!empty($all_article_stats)) {
-			$first_site_post = $all_article_stats['P']['first_post'];
-			$last_site_post = $all_article_stats['P']['last_post'];
+			$first_site_post = (isset($all_article_stats['P'])) ? $all_article_stats['P']['first_post'] : '' ;
+			$last_site_post = (isset($all_article_stats['P'])) ? $all_article_stats['P']['last_post'] : '' ;
+			$total_site_post = (isset($all_article_stats['P'])) ? $all_article_stats['P']['total'] : '' ;
 		}
 		
 		$all_comment_stats = get_comments_stats();
@@ -99,7 +102,7 @@
 				<p>Your last article was published on:</p>
 				<p class="indent"><em>'.from_mysql_date($last_user_post,'l, j F Y').'</em></p>
 				<p>You have published a total of:</p>
-				<p class="indent"><strong><em>'.$user_article_stats['P']['total'].' articles</strong> since 
+				<p class="indent"><strong><em>'.$total_user_post.' articles</strong> since 
 				'.from_mysql_date($first_user_post,'j M Y').'</em></p>
 			</div>';
 	}
@@ -126,7 +129,7 @@
 			<p>The last article was published on:</p>
 			<p class="indent"><em>'.from_mysql_date($last_site_post,'l, j F Y').'</em></p>
 			<p>Total published:</p>
-			<p class="indent"><strong><em>'.$all_article_stats['P']['total'].' articles</strong> since 
+			<p class="indent"><strong><em>'.$total_site_post.' articles</strong> since 
 			'.from_mysql_date($first_site_post,'j M Y').'</em></p>
 		</div>';
 	}

@@ -124,8 +124,8 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		
 			<div id="header_panel">
 				<p>you\'re using <a href="http://www.evilchicken.biz">wicked words</a></p>
-				<p>PHP time: '.date('d/m/y H:i').'</p>
-				<p>MySQL time: '.date('d/m/y H:i',strtotime(get_mysql_time())).'</p>';
+				<p>PHP/local time: '.date('d/m/y H:i').'</p>
+				<p>MySQL/server time: '.date('d/m/y H:i',strtotime(get_mysql_time())).'</p>';
 			// show additional timezone info if we're not in GMT
 			if(date('T') != 'GMT') {
 				echo '
@@ -575,7 +575,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		// construct link
 		if(!empty($article_data['id'])) {
 			$article_data['link'] = ($config['layout']['url_style'] == 'blog') 
-				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($article_data['date_uploaded'])).'/'.$row['url'].'/'
+				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($article_data['date_uploaded'])).'/'.$article_data['url'].'/'
 				: WW_REAL_WEB_ROOT.'/'.$article_data['category_url'].'/'.$article_data['url'].'/';
 		}
 		// start tabs

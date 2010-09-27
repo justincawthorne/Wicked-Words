@@ -952,7 +952,7 @@ function insert_favicon($theme = 'default') {
 		}
 
 		update_counters($article['id']);
-		$article_pre_url = ($config['layout']['url_style'] == 'cms') ? $article['category_url'] : date('Y/m/d' ,strtotime($article['date_uploaded'])) ;
+		$article_pre_url = ($config['layout']['url_style'] == 'cms') ? $article['category_url'] : date('Y/m/d' ,$article['date_ts']) ;
 		$article['link'] = WW_WEB_ROOT."/".$article_pre_url."/".$article['url']."/";
 		$article['current_page'] = (!empty($_GET['p'])) ? (int)$_GET['p'] : 0 ;
 		// generate bookmarks
@@ -965,7 +965,7 @@ function insert_favicon($theme = 'default') {
 			}
 		}		
 		// echo insert_page_header();
-		echo show_page_header($article['category_title'], date('d M Y',strtotime($article['date_uploaded'])));
+		echo show_page_header($article['category_title'], date('d M Y',$article['date_ts']));
 		echo '
 		<div class="article_wrapper">';
 		echo show_article_title($article);
@@ -1051,7 +1051,7 @@ function insert_favicon($theme = 'default') {
 		<!-- article byline -->
 		<p class=\"byline\">
 			<span class=\"byline_author\">by <a href=\"".WW_WEB_ROOT."/author/".$article['author_url']."\">".$article['author_name']."</a></span>
-			<span class=\"byline_date\">".date('d F Y' ,strtotime($article['date_uploaded']))."</span>
+			<span class=\"byline_date\">".date('d F Y H:i' ,$article['date_ts'])."</span>
 			<span class=\"byline_category\"><a href=\"".WW_WEB_ROOT."/".$article['category_url']."\">".$article['category_title']."</a></span>
 		</p>
 		";
@@ -1294,7 +1294,7 @@ function insert_favicon($theme = 'default') {
 			unset($_SESSION['comment_data']['comment_answer']);
 		} 	
 		// security session
-		$now = date('Ymdh');
+		$now = gmdate('Ymdh');
 		$token_name = md5($article_id.$now.$salt);
 		$token_value = md5($salt.$now.$article_id);
 		$comment_data['token_name'] = $token_name;
@@ -1456,7 +1456,7 @@ function insert_favicon($theme = 'default') {
 			$html .= '	
 			<p class="footer">
 				<span class="listing_date">';
-					$html .= (isset($item['date_uploaded'])) ? date('j M Y \a\t H:i',strtotime($item['date_uploaded'])) : '' ;
+					$html .= (isset($item['date_uploaded'])) ? date('j M Y \a\t H:i',$item['date_ts']) : '' ;
 			$html .= '
 				</span>
 				<span class="listing_category">';

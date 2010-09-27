@@ -165,35 +165,6 @@
 	}
 
 /**
- * set_mysql_timezone()
- * 
- * updates the mysql database timezone to match the php server time
- * in case where the TZ variable is set - this allows for the site to 
- * be hosted in a different timezone if needed
- * http://php.net/manual/en/timezones.php
- * 
- * @param	string	$tz		timezone variable
- */
-	
-	function set_mysql_timezone($tz) {
-		if(empty($tz)) {
-			return false;
-		}
-		// can we set the mysql timezone
-		$conn = author_connect();
-		$set_time = "SET SESSION time_zone = '".$tz."'";
-		$rs_settime = $conn->query($set_time);
-		$get_time = "SELECT @@session.time_zone AS tz";
-		$rs_gettime = $conn->query($get_time);
-		$row = $rs_gettime->fetch_assoc();
-		if($row['tz'] == $tz) {
-			// adjust php timezone
-			date_default_timezone_set($tz);
-		}
-	}
-
-
-/**
  * debug_array
  *
  * function to display arrays in readable format
@@ -241,19 +212,10 @@
 
 	if(!empty($config)) {
 	
-		// create an entry for use in the head/title tag
-	 	//$config['site']['meta_title'] = $config['site']['title'];
-		
-		// create a new 'site/meta' node
-		//$config['site']['meta'] = $config['meta'];
-		
-		// remove the original 'meta' node
-	 	//unset($config['meta']);
-	
-		// change mysql timezone if needed
+		// change php timezone if required
 
 		 if(!empty($config['admin']['timezone'])) {
-	 		set_mysql_timezone($config['admin']['timezone']);
+	 		date_default_timezone_set($config['admin']['timezone']);
 	 	}
 	 	
  	}
