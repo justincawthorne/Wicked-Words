@@ -1248,7 +1248,7 @@ function insert_favicon($theme = 'default') {
 				</p>';
 					echo (!empty($comment['title'])) ? '<p class="comment_title">'.$comment['title'].'</p>' : '' ;
 					echo '
-				<p class="comment_body">'.$comment['body'].'</p>
+				<p class="comment_body">'.nl2br($comment['body']).'</p>
 			</div>';
 			}
 		}
@@ -1412,7 +1412,7 @@ function insert_favicon($theme = 'default') {
 			} elseif(isset($item['comment_count'])) {
 				$comments = (empty($item['comment_count'])) ? 'no comments' : $item['comment_count'].' comments' ;
 				$comments = ($item['comment_count'] == 1) ? '1 comment' : $comments ;
-				if($item['comment_count'] > 1) {
+				if($item['comment_count'] > 0) {
 					$comments = '
 					<a href="'.$item['link'].'#comments" title="jump to comments for this article">'.$comments.'</a>';
 				}				
