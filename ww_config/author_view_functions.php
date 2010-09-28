@@ -660,9 +660,10 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		
 		// published date
 		$published = ($article_data['status'] != 'D') 
-			? '<br/><strong>published:</strong> '.date('j M Y \a\t H:i',$article_data['date_ts']).' (local) -- '.gmdate('j M Y \a\t H:i',$article_data['date_ts']).' (GMT)'
+			? '<br/><strong>published:</strong> '.date('j M Y \a\t H:i',$article_data['date_ts']).' <strong>GMT:</strong> '.gmdate('j M Y \a\t H:i',$article_data['date_ts'])
 			: '' ;
 		
+		$details = '';
 		if( (!empty($link)) || (!empty($published)) ) {
 			$details = '<p><span class="note">'.$link.$published.'</span></p>';
 		}

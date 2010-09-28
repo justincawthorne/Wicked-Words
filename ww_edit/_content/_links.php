@@ -1,5 +1,8 @@
 <?php
-
+	if(!defined('WW_SESS')) {
+		exit();
+	}
+	
 // page title - if undefined the site title is displayed by default
 
 	$page_title = 'links';

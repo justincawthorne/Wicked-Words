@@ -57,7 +57,7 @@
 	$article['id'] = (isset($_POST['article_id'])) ? $_POST['article_id'] : 0 ;
 	$article['url'] = (isset($_POST['url'])) ? $_POST['url'] : 'temp_url_title' ;
 	$article['date_uploaded'] = (isset($_POST['date_uploaded'])) ? $_POST['date_uploaded'] : date('Y-m-d H:i:s') ;
-
+	$article['date_ts'] = strtotime($article['date_uploaded']);
 	
 	// get author name
 	$article['author_name'] = get_author_name($article['author_id']);

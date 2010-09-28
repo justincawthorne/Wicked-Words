@@ -1,5 +1,7 @@
 <?php
-
+	if(!defined('WW_SESS')) {
+		exit();
+	}
 // page title
 
 	$page_title = 'Home Page';

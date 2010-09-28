@@ -1,3 +1,62 @@
+#compress files
+
+	<IfModule mod_deflate.c>
+		<FilesMatch "\.(css|js|x?html?|php)$">
+			SetOutputFilter DEFLATE
+		</FilesMatch>
+	</IfModule>
+
+# set Expire headers
+
+	<IfModule mod_expires.c>
+		ExpiresActive On
+		ExpiresDefault "access plus 1 seconds"
+		ExpiresByType image/x-icon "access plus 2592000 seconds"
+		ExpiresByType image/jpeg "access plus 2592000 seconds"
+		ExpiresByType image/png "access plus 2592000 seconds"
+		ExpiresByType image/gif "access plus 2592000 seconds"
+		ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+		ExpiresByType text/css "access plus 604800 seconds"
+		ExpiresByType text/javascript "access plus 216000 seconds"
+		ExpiresByType application/javascript "access plus 216000 seconds"
+		ExpiresByType application/x-javascript "access plus 216000 seconds"
+		ExpiresByType text/html "access plus 600 seconds"
+		ExpiresByType application/xhtml+xml "access plus 600 seconds"
+	</IfModule>
+
+# set Cache-Control Headers
+
+	<IfModule mod_headers.c>
+		<FilesMatch "\.(ico|jpe?g|png|gif|swf)$">
+		Header set Cache-Control "max-age=2592000, public"
+		</FilesMatch>
+		<FilesMatch "\.(css)$">
+		Header set Cache-Control "max-age=604800, public"
+		</FilesMatch>
+		<FilesMatch "\.(js)$">
+		Header set Cache-Control "max-age=216000, private"
+		</FilesMatch>
+		<FilesMatch "\.(x?html?|php)$">
+		Header set Cache-Control "max-age=600, private, must-revalidate"
+		</FilesMatch>
+	</IfModule>
+
+# Turn ETags Off
+
+	<IfModule mod_headers.c>
+		Header unset ETag
+	</IfModule>
+	
+	FileETag None
+
+# unset Remove Last-Modified Header
+
+	<IfModule mod_headers.c>
+		Header unset Last-Modified
+	</IfModule>
+
+# start redirect process
+
 	Options +FollowSymlinks
 	RewriteEngine On
 	
@@ -22,7 +81,6 @@
 
 	RewriteRule ^/?robots.txt$ ww_view/robots.php [L]
 	
-	
 # extra security to protect files in ww_edit section
 	
 	RewriteRule ^/?ww_edit/!(index.php)([^\.]+)?$ ww_view/index.php [L]
@@ -39,4 +97,5 @@
 	
 	# otherwise use the following which filters out filenames
 	RewriteRule ^/?([^\.]+)?$ ww_view/index.php [L]
+	
 AddHandler php5-script .php

@@ -1,5 +1,8 @@
 <?php
-
+	if(!defined('WW_SESS')) {
+		exit();
+	}
+	
 	$cookie_name = 'author'.(int)$_SESSION[WW_SESS]['user_id'];
 	
 	setcookie($cookie_name, session_id(), 0, "/");
@@ -111,18 +114,20 @@
 			<p>
 				<a href="'.$_SERVER["PHP_SELF"].'?page_name=write&amp;article_id='.$article_data['id'].'">Edit your article</a>
 			</p>';		
+	
+	// postdated article	
 		
 		if($status_text == 'postdated') {
 			
-	// postdated article
-			
 			$main_content .= '
 			<p>This article is postdated and will be available on the site from '.from_mysql_date($article_data['date_uploaded'],'d m Y \a\t H:i').'</p>';
-			
-		} elseif( ($article_data['status'] == 'P') || ($article_data['status'] == 'A') ){
-		
+
 	// published or archived (i.e. still visible from main site
 			
+		} elseif( ($article_data['status'] == 'P') || ($article_data['status'] == 'A') ){
+			
+		// compile url
+				
 			if($config['layout']['url_style'] == 'blog') {
 				$article_url = WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($article_data['date_uploaded'])).'/'.$row['url'].'/';
 			} else {

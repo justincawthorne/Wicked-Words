@@ -2115,12 +2115,15 @@
 		curl_setopt ($ch, CURLOPT_URL, $url);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		$xml = curl_exec($ch);
+		$data = curl_exec($ch);
 		curl_close($ch);
+		if($data == false) {
+			return false;
+		}
+		$xml = @simplexml_load_string($data);
 		if($xml == false) {
 			return false;
 		}
-		$xml = simplexml_load_string($xml);
 		$articles = array();
 		for($i = 0; $i < $limit; $i++) {
 			$articles[] = array(
@@ -2141,6 +2144,9 @@
 			);
 		}
 		*/
+		if(empty($articles)) {
+			return false;
+		}
 		return $articles;
 	}
 
