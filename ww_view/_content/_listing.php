@@ -123,7 +123,7 @@
 	$page_title 	= 'Showing articles '.implode(', ',$page_title_text);
 	
 	$total			= (!empty($articles[0]['total_found'])) ? $articles[0]['total_found'] : '0' ;
-	$total_articles = $total.' articles found';
+	$total_articles = ($total == 1) ? $total.' article found' : $total.' articles found' ;
 	
 	// feed listing
 	
