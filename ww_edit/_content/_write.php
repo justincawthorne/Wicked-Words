@@ -120,7 +120,7 @@
 		if($status_text == 'postdated') {
 			
 			$main_content .= '
-			<p>This article is postdated and will be available on the site from '.from_mysql_date($article_data['date_uploaded'],'d m Y \a\t H:i').'</p>';
+			<p>This article is postdated and will be available on the site from '.from_mysql_date($article_data['date_uploaded'],'d M Y \a\t H:i').' GMT</p>';
 
 	// published or archived (i.e. still visible from main site
 			

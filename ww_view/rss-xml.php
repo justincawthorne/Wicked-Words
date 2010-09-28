@@ -165,17 +165,18 @@ echo '<rss xmlns:content="http://purl.org/rss/1.0/modules/content/"
 	}
 	
 // loop through content
-	
+
 	foreach($feed_content as $item) {
 		
 		$item_title = $item['title'];
 		$item_description = (empty($item['summary'])) ? create_summary($item['body']) : prepare_string($item['summary']) ;
-		$item_body = '';
+		
 		// show complete article?
+		
 		if(!empty($config['admin']['complete_feed'])){
-			$body_text = "<p><strong>".$item_description."</strong></p>";
-			$body_text .= strip_inline_styles($item['body']);
-			$item_body = "<content:encoded><![CDATA[".$body_text."]]></content:encoded>";
+			$summary = (!empty($item['summary'])) ? "<p><strong>".prepare_string($item['summary'])."</strong></p>" : '' ;
+			$body = strip_inline_styles($item['body']);
+			$item_description = "<![CDATA[".$summary.$body."]]>";
 		}
 		$item_date = date('r',strtotime($item['date_uploaded']));
 		
@@ -185,7 +186,6 @@ echo '<rss xmlns:content="http://purl.org/rss/1.0/modules/content/"
 		<item>
 			<title>'.$item_title.'</title>
 			<description>'.$item_description.'</description>
-			'.$item_body.'
 			<link>'.$item['link'].'</link>';
 			
 		// some additional entries for podcasts

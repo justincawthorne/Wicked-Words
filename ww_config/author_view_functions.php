@@ -769,7 +769,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 				</p>
 				';
 		// show date and time dropdowns - only for draft and postdated articles
-		if( ($article_data['status'] == 'D') || (strtotime($article_data['date_uploaded']) > time()) ) {
+		if( ($article_data['status'] == 'D') || ($article_data['date_ts']) > time() ) {
 			$html .= form_insert_date_fields($article_data);
 		} else {
 			// show publish date in hidden field
