@@ -856,7 +856,7 @@ function insert_favicon($theme = 'default') {
 			$bookmarks_html .=  "
 				<li>
 					<a title=\"Add to ".$social_site."\" 
-						href=\"".$link."\"
+						href=\"".$url."\"
 						target=\"_blank\"
 						".$style.">
 					</a>
