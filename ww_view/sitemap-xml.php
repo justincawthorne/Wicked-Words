@@ -8,6 +8,7 @@ xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">\
 // get site data and connections
 include_once('../ww_config/model_functions.php');
 include_once('../ww_config/controller_functions.php');
+include_once('../ww_config/combined_functions.php');
 
 	$layout = get_settings('layout');
 	$url_style = $layout['layout']['url_style'];

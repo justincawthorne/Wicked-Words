@@ -72,14 +72,14 @@
 
 	RewriteCond %{REQUEST_URI} !([^\.]+)/$
 	RewriteRule ^([^\.]+)$ %{REQUEST_URI}/ [L,R=301]
-
-# redirect to sitemap
-
-	RewriteRule ^/?sitemap.xml$ ww_view/sitemap-xml.php [L]
 	
 # redirect to robots.txt
 
 	RewriteRule ^/?robots.txt$ ww_view/robots.php [L]
+	
+# redirect to sitemap
+
+	RewriteRule ^/?sitemap.xml$ ww_view/sitemap-xml.php [L]
 	
 # extra security to protect files in ww_edit section
 	
