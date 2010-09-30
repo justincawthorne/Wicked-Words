@@ -1468,6 +1468,8 @@
 		// create links
 		$row['link']['blog'] = WW_REAL_WEB_ROOT.'/'.date('Y/m/d',$row['date_ts']).'/'.$row['url'].'/';
 		$row['link']['cms'] = WW_REAL_WEB_ROOT.'/'.$row['category_url'].'/'.$row['url'].'/';
+		// put category url in a get param if not set (for custom css styles)
+		$_GET['category_url'] = (isset($_GET['category_url'])) ? $_GET['category_url'] : $row['category_url'] ;
 		// get tags
 		$tags = get_article_tags($article_id);
 		$row['tags'] = (!empty($tags)) ? $tags : '' ;

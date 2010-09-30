@@ -1052,7 +1052,7 @@ function insert_favicon($theme = 'default') {
 		<p class=\"byline\">
 			<span class=\"byline_author\">by <a href=\"".WW_WEB_ROOT."/author/".$article['author_url']."\">".$article['author_name']."</a></span>
 			<span class=\"byline_date\">".date('d F Y H:i' ,$article['date_ts'])."</span>
-			<span class=\"byline_category\"><a href=\"".WW_WEB_ROOT."/".$article['category_url']."\">".$article['category_title']."</a></span>
+			<span class=\"byline_category\"><a href=\"".WW_WEB_ROOT."/".$article['category_url']."/\">".$article['category_title']."</a></span>
 		</p>
 		";
 		return $html;	
