@@ -382,12 +382,12 @@
 		}
 		$current_url = current_url();
 		// start building
+		$class = (!empty($title)) ? ' snippet_'.slugify($title) : '' ;
 		$snippet = '
-		<div class="snippet">
+		<div class="snippet'.$class.'">
 		';
 		// title
-		$snippet .= (!empty($title)) 
-			? '<h6>'.$title.'</h6>' : '' ;
+		$snippet .= (!empty($title)) ? '<h6>'.$title.'</h6>' : '' ;
 		// content
 		if(is_array($content)) {
 			$snippet .= '
@@ -470,6 +470,16 @@
 		$string = htmlentities($string,ENT_QUOTES);
 		$string = trim($string);
 		return $string;
+	}
+
+	function slugify($string) {
+		$string = strtolower($string);			// Convert to lowercase
+		$string = strip_tags($string);				// strip html
+		$string = preg_replace('/[^a-zA-Z0-9\s]/', '', $string);  
+												// Remove all punctuation
+		$string = ereg_replace(" +", " ", $string);	// Remove multiple spaces
+		$string = str_replace(' ', '-', $string);	// Convert spaces to hyphens
+		return $string;		
 	}
 
  /**

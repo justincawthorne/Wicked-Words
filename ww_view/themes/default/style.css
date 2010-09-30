@@ -491,7 +491,7 @@ div#comment_errors ul li{
 */
 
 #sharing_bookmarks {
-	width: 100px;
+	width: 72px;
 	overflow: hidden;
 	padding: 4px;
 	float: right;
@@ -499,21 +499,20 @@ div#comment_errors ul li{
 }
 #sharing_bookmarks li {
 	float: right;
-	margin: 2px;
+	margin: 0px;
 }
 #sharing_bookmarks li img {
-	border: none;
+
 	margin: 3px;
 }
 #sharing_bookmarks li a {
-	border: solid 1px #cccccc;
 	width: 22px;
 	height: 22px;
 	display: block;
+	border: solid 1px #fff;
 }
 #sharing_bookmarks li a:hover {
-	border: solid 1px #333333;
-	background-color: #ffffff;
+	border: solid 1px #eee;
 }
 
 /*

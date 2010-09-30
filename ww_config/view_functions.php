@@ -848,7 +848,7 @@ function insert_favicon($theme = 'default') {
 			
 			// set link to text or icon depending on bookmark_style		
 			$link_text = (empty($icons)) ? $social_site : '' ; 
-			$style = " style=\"background-image:url('".WW_REAL_WEB_ROOT."/ww_view/_img/sb_sprite.gif');background-position: ".$bg_pos."px 0px;\" "; 
+			$style = " style=\"background-image:url('".WW_REAL_WEB_ROOT."/ww_view/_img/sb_sprite.png');background-position: ".$bg_pos."px 0px;\" "; 
 			
 			// replace vars {title} and {url} in $social_url
 			$url = str_replace("{title}",urlencode($title), str_replace("{url}",$link,$social_url) );
