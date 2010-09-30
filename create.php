@@ -12,7 +12,7 @@ include_once('ww_config/model_functions.php');
 		
 		if( (empty($_POST['author_name'])) || (empty($_POST['author_email']))
 			|| (empty($_POST['author_pass'])) || (empty($_POST['author_pass_confirm'])) ) {
-			$error = '<p>All fields need to be filled in</p>';
+			$error = '<p>All author fields need to be filled in</p>';
 		} else {
 			
 			$author_name 	= $_POST['author_name'];
@@ -30,7 +30,29 @@ include_once('ww_config/model_functions.php');
 			if($author_pass != $_POST['author_pass_confirm']) {
 				$error = '<p>Passwords don\'t match</p>';
 			}
-						
+			
+			// site details
+			
+			$site_query = array();
+			$site_query[] = "UPDATE settings 
+							SET property_value = '".$conn->real_escape_string($author_email)."'
+							WHERE property_name = 'email'";
+			if(!empty($_POST['site_title'])) {
+				$site_query[] = "UPDATE settings 
+							SET property_value = '".$conn->real_escape_string($_POST['site_title'])."'
+							WHERE property_name = 'title'";				
+			}
+			if(!empty($_POST['site_tagline'])) {
+				$site_query[] = "UPDATE settings 
+							SET property_value = '".$conn->real_escape_string($_POST['site_tagline'])."'
+							WHERE property_name = 'subtitle'";				
+			}
+			if(!empty($_POST['site_description'])) {
+				$site_query[] = "UPDATE settings 
+							SET property_value = '".$conn->real_escape_string($_POST['site_description'])."'
+							WHERE property_name = 'description'";				
+			}
+		
 		}
 
 		if(empty($error)) {
@@ -45,10 +67,16 @@ include_once('ww_config/model_functions.php');
 					)";
 			$result = $conn->query($query);
 			if(!$result) {
-				$error = '<p>Sorry - there was a problem updating the database - try again</p>';
+				$error = '<p>Sorry - there was a problem updating the author details - try again</p>';
 			} else {
 				$finished = 1;
 			}
+			
+			// add site details
+			foreach($site_query as $sq) {
+				$site_result = $conn->query($sq);
+			}
+				
 		}
 		
 	}
@@ -60,21 +88,39 @@ include_once('ww_config/model_functions.php');
 			'.$error.'
 			<p><label for="author_name">Author name:</label> 
 				<input name="author_name" id="author_name" size="20" type="text"/>
-				(this is the name that will appear on your articles)
+				<br/>(this is the name that will appear on your articles)
 			</p>
 			
 			<p><label for="author_email">Email address:</label> 
 				<input name="author_email" id="author_email" size="20" type="text"/>
-				(make sure this is your real email address!)
+				<br/>(make sure this is your real email address!)
 			</p>
 			
 			<p><label for="author_pass">Password:</label> 
 				<input name="author_pass" id="author_pass" size="20" type="password"/>
-				(must be at least 6 characters)
+				<br/>(must be at least 6 characters)
 			</p>
 
 			<p><label for="author_pass_confirm">Confirm Password:</label> 
 				<input name="author_pass_confirm" id="author_pass_confirm" size="20" type="password"/>
+			</p>
+			
+			<p><em>You can optionally add some site details here - you can also add (or edit) these at any time in the admin section</em></p>
+				
+			
+			<p><label for="site_title">Site Title:</label> 
+				<input name="site_title" id="site_title" size="40" type="text"/>
+				<br/>(yep, you were right: this is the title of your site)
+			</p>
+			
+			<p><label for="site_tagline">Site Tagline:</label> 
+				<textarea name="site_tagline" id="site_tagline" rows="3" cols="25"></textarea>
+				<br/>(an optional tagline or one line description to go below the title)
+			</p>
+			
+			<p><label for="site_description">Site Description:</label> 
+				<textarea name="site_description" id="site_description" rows="5" cols="25"></textarea>
+				<br/>(a longer description for search engines)
 			</p>
 	
 		<input name="add_author" value="Add Author" type="submit"/>
@@ -345,6 +391,30 @@ include_once('ww_config/model_functions.php');
 	('design', 'footer_height', '80', '80', 'text', NULL, 'height of footer'),
 */
 
+echo '
+<html>
+<head>
+<style type="text/css">
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 100%;
+}
+p {
+	font-size: 0.875em;
+}
+form {
+	margin: 0 auto;
+	width: 440px;
+}
+label {
+	display: block;
+	clear: both;
+	font-weight: bold;
+}
+	
+</style>
+</head>
+<body>';
 
 // get existing tables list
 
@@ -407,5 +477,9 @@ include_once('ww_config/model_functions.php');
 	if(!empty($finished)) {	
 		$link = str_replace('create.php','',$_SERVER['PHP_SELF']);
 		echo '<p>it appears our work here is done - please <a href="'.$link.'">go about your business</a>...</p>';
-	}	
+	}
+	
+echo '
+</body>
+</html>';	
 ?>

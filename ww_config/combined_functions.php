@@ -181,7 +181,7 @@
 					FROM categories
 					LEFT JOIN articles ON articles.category_id = categories.id
 					WHERE articles.status = 'P'
-					AND articles.date_uploaded <= NOW()
+					AND articles.date_uploaded <= UTC_TIMESTAMP()
 					GROUP BY categories.id
 					ORDER BY title";
 		$result = $conn->query($query);
@@ -310,7 +310,7 @@
 				FROM articles 
 					LEFT JOIN categories ON articles.category_id = categories.id 
 				WHERE status = 'P'
-					AND date_uploaded <= NOW()";
+					AND date_uploaded <= UTC_TIMESTAMP()";
 		$query .= (!empty($where)) ? ' AND '.$where : '' ;
 		$query .= ' ORDER BY '.$order;
 		$query .= (!empty($limit)) ? ' LIMIT 0,'.$limit : '' ;

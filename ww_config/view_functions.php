@@ -975,11 +975,11 @@ function insert_favicon($theme = 'default') {
 		}
 		echo show_article_summary($article);
 		echo show_article_body($article);
-		if($config['connections']['sharing_position'] == 'article_footer') {
-			echo $sharing_bookmarks;
-		}
 		echo show_article_attachments($article['attachments']);
 		echo show_article_tags($article['tags']);
+		if($config['connections']['sharing_position'] == 'article_footer') {
+			echo $sharing_bookmarks;
+		}		
 		echo '
 		</div> <!-- close article wrapper -->
 		';

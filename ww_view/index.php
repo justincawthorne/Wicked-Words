@@ -40,9 +40,12 @@ if(!file_exists('../ww_config/model_functions.php')) {
 // set theme and check for includes
 
 	if(empty($config)) {
-		echo 'it appears this is a new installation of Wicked Words<br />
-		... well done you!<br />
-		now go to the <a href="create.php">create page</a> to create your database tables...';
+		echo '
+		<div style="margin:0 auto;width:440px;margin-top: 120px;text-align:center;">
+		<p>it appears this is a new installation of Wicked Words</p>
+		<h4>Well done you!</h4>
+		<p>now go to the <a href="create.php">create page</a> to create your database tables...</p>
+		</div>';
 		exit();
 	}
 	
@@ -201,7 +204,6 @@ if(!file_exists('../ww_config/model_functions.php')) {
 		$content_partial = (file_exists($theme_content_folder.'/_'.$_GET['page_name'].'.php')) 
 			? $theme_content_folder.'/_'.$_GET['page_name'].'.php'
 			: WW_ROOT.'/ww_view/_content/_'.$_GET['page_name'].'.php';
-
 
 // at this point we could look for a custom 'builder' file in the theme folder
 
