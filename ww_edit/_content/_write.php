@@ -129,14 +129,14 @@
 		// compile url
 				
 			if($config['layout']['url_style'] == 'blog') {
-				$article_url = WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($article_data['date_uploaded'])).'/'.$row['url'].'/';
+				$article_url = WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($article_data['date_uploaded'])).'/'.$article_data['url'].'/';
 			} else {
 				// get category url
 				$conn = author_connect();
 				$query = "SELECT url FROM categories WHERE id = ".(int)($article_data['category_id']);
 				$result = $conn->query($query);
-				$row = $result->fetch_assoc();				
-				$article_url = WW_REAL_WEB_ROOT.'/'.$row['url'].'/'.$article_data['url'].'/';
+				$category_row = $result->fetch_assoc();				
+				$article_url = WW_REAL_WEB_ROOT.'/'.$category_row['url'].'/'.$article_data['url'].'/';
 			}
 				
 			$action_text = ($article_data['action'] == 'updated') ? 'Updated' : 'New' ;
