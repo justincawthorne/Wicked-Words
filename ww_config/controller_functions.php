@@ -1585,7 +1585,7 @@
 			$type = (!empty($row['author_id'])) ? '[AUTHOR] ' : '';
 			$type = (!empty($row['reply_id'])) ? $type.'[REPLY] ' : $type ;
 			$row['title'] = (!empty($row['title'])) ? $row['title'] : 're: '.$row['article_title'] ;
-			$row['summary'] = $type.$row['body'].' (... posted to article: <strong>'.$row['article_title'].'</strong>)';
+			$row['summary'] = $type.$row['body'].'<br />(posted to article: <strong>'.$row['article_title'].'</strong>)';
 			$row['link'] = WW_WEB_ROOT.'/id/'.$row['article_id'].'#comment_'.$row['id'];
 			$row['body'] = '';
 			$data[] = $row;

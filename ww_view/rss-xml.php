@@ -174,7 +174,11 @@ echo '<rss xmlns:content="http://purl.org/rss/1.0/modules/content/"
 		// show complete article?
 		
 		if(!empty($config['admin']['complete_feed'])){
-			$summary = (!empty($item['summary'])) ? "<p><strong>".prepare_string($item['summary'])."</strong></p>" : '' ;
+			if($_GET['feed'] == 'comments') {
+				$summary = "<p>".$item['summary']."</p>";
+			} else {
+				$summary = (!empty($item['summary'])) ? "<p><strong>".prepare_string($item['summary'])."</strong></p>" : '' ;				
+			}
 			$body = strip_inline_styles($item['body']);
 			$item_description = "<![CDATA[".$summary.$body."]]>";
 		}
