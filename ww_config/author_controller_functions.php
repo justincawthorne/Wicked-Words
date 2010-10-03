@@ -712,10 +712,11 @@
 		$row = $result->fetch_assoc();
 		$row = stripslashes_deep($row);
 		// adjust times to local timezone if necessary
-		$ts = strtotime($row['date_uploaded']);
+		$row['date_ts'] = strtotime($row['date_uploaded']);
 		$offset = date('Z');
-		$row['date_ts'] = $ts+$offset;
-		$row['date_uploaded'] = date('Y-m-d H:i:s',$row['date_ts']);
+		$row['local_date_ts'] = $row['date_ts']+$offset;
+		$row['local_date_uploaded'] = date('Y-m-d H:i:s',$row['local_date_ts']);
+		// process comments query
 		$comments = $comment_result->fetch_assoc();
 		$row['comment_count'] = $comments['total'];
 		$result->close();

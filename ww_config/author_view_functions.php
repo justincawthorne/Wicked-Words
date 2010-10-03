@@ -660,7 +660,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		
 		// published date
 		$published = ($article_data['status'] != 'D') 
-			? '<br/><strong>published:</strong> '.date('j M Y \a\t H:i',$article_data['date_ts']).' <strong>GMT:</strong> '.gmdate('j M Y \a\t H:i',$article_data['date_ts'])
+			? '<br/><strong>published:</strong> '.date('j M Y \a\t H:i',$article_data['local_date_ts']).' <strong>GMT:</strong> '.date('j M Y \a\t H:i',$article_data['date_ts'])
 			: '' ;
 		
 		$details = '';
