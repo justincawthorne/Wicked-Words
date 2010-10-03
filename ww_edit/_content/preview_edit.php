@@ -44,7 +44,7 @@
 // now bring in our functions	
 	
 	include_once(WW_ROOT.'/ww_config/model_functions.php');
-	//include_once(WW_ROOT.'/ww_config/controller_functions.php');
+	include_once(WW_ROOT.'/ww_config/combined_functions.php');
 	include_once(WW_ROOT.'/ww_config/author_controller_functions.php');
 	include_once(WW_ROOT.'/ww_config/author_view_functions.php');
 	
@@ -55,6 +55,17 @@
 	} else {
 		$error = '<p>No edit selected</p>';
 	}
+	
+	// delete
+	if( (isset($_GET['action'])) && ($_GET['action'] == 'delete_edit') ) {
+		$delete_edit =  delete_article_edit($edit_id);
+		if($delete_edit === true) {
+			$error = 'Edit has been deleted - you can now close this window.';
+		} else {
+			$error = $delete_edit;
+		}
+	}
+	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -85,12 +96,19 @@
 		$body = (function_exists('gzinflate')) ? gzinflate($edit['body']) : $edit['body'];
 					
 		echo '
+		<a id="top"</a>
 		<h2>'.stripslashes($edit['title']).'</h2>
 		<p>
 			<em>version created on '.date('d M Y H:i',strtotime($edit['date_edited'])).' by '.$edit['name'].'</em>
-			&#124; <a href="javscript:void(0);" id="use_edit">use this</a>
+			&#124; <a href="javascript:void(0);" id="use_edit">use this</a>
+			&#124; <a href="#delete">delete</a>
 		</p>
-		<hr /><div id="edit_body">'.stripslashes($body).'</div><hr />';
+		<hr />
+		<div id="edit_body">'.stripslashes($body).'</div>
+		<hr />
+		<a id="delete"</a>
+		<p>really delete it? are you sure?</p>
+		<p><a href="'.current_url().'&amp;action=delete_edit">yes</a> &#124; <a href="#top">no</a></p>';
 		
 	} else {
 		

@@ -735,7 +735,8 @@
 	
 	function get_article_edits($article_id) {
 		if(empty($article_id)) {
-			return false;
+			//return false;
+			$article_id = 0;
 		}
 		$conn = reader_connect();
 		$query = "SELECT edits.id, author_id, authors.name,
@@ -778,6 +779,31 @@
 		$row = $result->fetch_assoc();
 		$result->close();
 		return $row;		
+	}
+
+/**
+ * get_article_edit
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */	
+	
+	function delete_article_edit($edit_id) {
+		if(empty($edit_id)) {
+			return false;
+		}
+		$conn = author_connect();
+		$query = "DELETE FROM edits
+				WHERE edits.id = ".(int)$edit_id;
+		$result = $conn->query($query);
+		if(!$result) {
+			return $conn->error;
+		} else {
+			return true;
+		}	
 	}
 
 /**

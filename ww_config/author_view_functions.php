@@ -578,6 +578,9 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($article_data['date_uploaded'])).'/'.$article_data['url'].'/'
 				: WW_REAL_WEB_ROOT.'/'.$article_data['category_url'].'/'.$article_data['url'].'/';
 		}
+		// get edits data
+		$edits = get_article_edits($article_data['id']);
+		$edits_count = count($edits);
 		// start tabs
 		$attachments_total = count($article_data['attachments']);
 		$form = '
@@ -587,7 +590,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 					<li><a href="#tab_attachments">Attachments ('.$attachments_total.')</a></li>
 					<li><a href="#tab_seo">SEO</a></li>
 					<li><a href="#tab_comments">Comments</a></li>
-					<li><a href="#tab_edits">Edits</a></li>
+					<li><a href="#tab_edits">Edits ('.$edits_count.')</a></li>
 				</ul>';
 		// start form
 		$form .= '
@@ -613,7 +616,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		$form .= form_attachments_tab($article_data, $config);
 		$form .= form_seo_tab($article_data);
 		$form .= form_comments_tab($article_data, $config);
-		$form .= form_edits_tab($article_data);
+		$form .= form_edits_tab($edits);
 		// submit buttons
 		$form .= '
 				<p>
@@ -1047,18 +1050,17 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
  * 
  */
 	
-	function form_edits_tab($article_data) {
-		$edits = get_article_edits($article_data['id']);
+	function form_edits_tab($edits_data) {
 		$html = '
 			<div id="tab_edits">
 				<h2>Edits</h2>';
-		if(empty($edits)) {
+		if(empty($edits_data)) {
 			$html .= '
 				<p>There are no previous edits for this article.</p>';
 		} else {
 			$html .= '
 				<ul class="article_listing">';
-			foreach($edits as $edit) {
+			foreach($edits_data as $edit) {
 				$html .= '
 					<li>
 						<div class="article_title">'.from_mysql_date($edit['date_edited'],'d M Y H:i').'</div>
