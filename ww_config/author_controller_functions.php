@@ -3552,7 +3552,7 @@
 		$category 	= (!empty($_POST['new_category'])) ? clean_input($_POST['new_category']) : $category ;
 		$sort		= (!empty($_POST['sort'])) ? (int)$_POST['sort'] : 0 ;
 		$insert = "INSERT INTO links
-				(title, url, attributes, summary, category)
+				(title, url, attributes, summary, category, sort)
 				VALUES
 				(
 				'".$conn->real_escape_string($title)."',

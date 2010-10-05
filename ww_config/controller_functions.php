@@ -982,9 +982,9 @@
 		if(!empty($type)) {
 			$query .= " WHERE category LIKE '".$conn->real_escape_string($type)."'";	
 		} else {
-			$query .= " WHERE category NOT IN('site_rss','site_menu','site_head')";
+			$query .= " WHERE category NOT IN('site_rss','site_menu','site_head') OR category IS NULL ";
 		}
-		$query .= " ORDER BY category, nullsort, sort, id DESC";
+		$query .= " ORDER BY category, nullsort, sort, title";
 		$result = $conn->query($query);
 		$data = array();
 		if(empty($result)) {
@@ -992,6 +992,8 @@
 		}
 		while($row = $result->fetch_assoc()) { 
 			$row = stripslashes_deep($row);
+			$row['category'] = (!empty($row['category'])) ? $row['category'] : 'links' ;
+			$row['link'] = $row['url'];
 			$data[$row['category']][] = $row;
 		}
 		$result->close();

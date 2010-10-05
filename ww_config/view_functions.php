@@ -411,7 +411,7 @@ function insert_favicon($theme = 'default') {
 		
 		// header
 		$panel 	= (!empty($config['site']['header_panel_html'])) ? $config['site']['header_panel_html'] : '' ;
-		$nav	= ($config['layout']['main_menu'] == 'header') ? insert_nav() : '' ;
+		$nav	= ($config['layout']['main_menu'] == 'header') ? insert_nav($config['layout']['main_menu']) : '' ;
 		echo (!empty($body_content['header'])) 
 			? $body_content['header'] 
 			: insert_header($config['site']['title'],$config['site']['subtitle'], $panel, $nav) ;
@@ -420,7 +420,7 @@ function insert_favicon($theme = 'default') {
 		if($config['layout']['main_menu'] == 'navbar') {
 			echo (!empty($body_content['nav']))
 			? $body_content['nav']
-			: insert_nav() ;			
+			: insert_nav($config['layout']['main_menu']) ;			
 		}
 		
 		// start content wrapper		
@@ -527,20 +527,21 @@ function insert_favicon($theme = 'default') {
  * 
  */	
 
-	function insert_nav() {
+	function insert_nav($position = '') {
 		$menu_links = get_links('site_menu');
 		if(empty($menu_links)) {
 			return;
 		}
+		$position = (!empty($position)) ? $position.'_' : '' ;
 		$nav = '
 			<!-- nav section -->
-			<div id="nav">
+			<div id="'.$position.'nav">
 			<ul id="nav_links">';
 		foreach($menu_links['site_menu'] as $cat => $data) {
 			$title_attr = (!empty($data['summary'])) ? $data['title'].' - '.$data['summary'] : $data['title'] ;
 			$nav .= '
 				<li>
-					<a href="'.$data['url'].'" title="'.$title_attr.'">'.$data['title'].'</a>
+					<a href="'.$data['link'].'" title="'.$title_attr.'">'.$data['title'].'</a>
 				</li>
 			';
 		}	
@@ -1560,7 +1561,36 @@ function insert_favicon($theme = 'default') {
  * -----------------------------------------------------------------------------
  */
 
-	
+/**
+ * show_links
+ * 
+ * turns a links array into a links list
+ * 
+ * 
+ * 
+ * 
+ */
+
+	function show_links($links) {
+		if(!array($links)) {
+			return;
+		}
+		$links_html = '
+			<ul>';
+		foreach($links as $data) {
+			$title_attr = (!empty($data['summary'])) ? $data['title'].' - '.$data['summary'] : $data['title'] ;
+			$links_html .= '
+				<li>
+					<a href="'.$data['link'].'" title="'.$title_attr.'">'.$data['title'].'</a>
+				</li>
+			';
+		}	
+		$links_html .= '
+			</ul>';
+		return $links_html;
+	}
+
+ 	
 /**
  * build_select_form
  * 

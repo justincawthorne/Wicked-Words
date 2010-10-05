@@ -110,6 +110,58 @@ p, ul, ol, blockquote {
 }
 
 /*
+	--- header nav ------------------------
+*/
+
+#header_nav {
+	position: relative;
+	width: 100%;
+	border: solid 1px #eee;
+	background-color: #eee;
+	overflow: auto;
+	margin-bottom: 1em;	
+}
+#header_nav ul#nav_links {
+	float: right;
+	font-size: 0.75em;
+}
+#navbar_nav {
+	position: relative;
+	width: 100%;
+	border: solid 1px #eee;
+	background-color: #eee;
+	overflow: auto;
+	margin-bottom: 1em;	
+}
+#navbar_nav ul#nav_links {
+	float: left;
+	font-size: 0.875em;
+}
+/*
+	--- titlebar nav ------------------------
+*/
+
+
+ul#nav_links {
+	font-weight: bold;
+	margin: 0;		
+}
+ul#nav_links li {
+	float: left;	
+}
+ul#nav_links li a {
+	display: block;
+	padding: 5px 18px;
+	margin: 0 1px;	
+}
+ul#nav_links li a:hover {
+	margin: 0;
+	background-color: #fff;
+	border-left: solid 1px #999;
+	border-right: solid 1px #999;
+}
+
+/*
 	--- content containers ------------------------
 */
 
