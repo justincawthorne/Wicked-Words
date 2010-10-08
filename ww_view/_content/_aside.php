@@ -83,7 +83,7 @@
 	
 	if($config['layout']['main_menu'] == 'aside') {
 		$menu_links = get_links('site_menu');
-		$menu_links = $menu_links['site_menu'];
+		$menu_links = (isset($menu_links['site_menu'])) ? $menu_links['site_menu'] : '' ;
 		$aside_snippet['main_menu'] = build_snippet('Menu',$menu_links);
 	}
 	
