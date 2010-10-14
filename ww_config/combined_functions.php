@@ -310,7 +310,7 @@
 					categories.url AS category_url
 				FROM articles 
 					LEFT JOIN categories ON articles.category_id = categories.id 
-				WHERE status IN ('A','P')
+				WHERE status = 'P'
 					AND date_uploaded <= UTC_TIMESTAMP()";
 		$query .= (!empty($where)) ? ' AND '.$where : '' ;
 		$query .= $order;

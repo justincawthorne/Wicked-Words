@@ -1109,7 +1109,7 @@
 		if (isset($_GET['tag_id'])) {
 			$query .= " LEFT JOIN tags_map ON tags_map.article_id = articles.id";
 		}
-		$query .= " WHERE status IN ('A','P')
+		$query .= " WHERE status = 'P'
 					AND date_uploaded <= UTC_TIMESTAMP()";
 		// author id
 		if (isset($_GET['author_id'])) {
@@ -1279,7 +1279,7 @@
 					LEFT JOIN attachments ON attachments_map.attachment_id = attachments.id
 					LEFT JOIN authors ON articles.author_id = authors.id 
 					LEFT JOIN categories ON articles.category_id = categories.id 
-				WHERE articles.status IN ('A','P')
+				WHERE articles.status = 'P'
 					AND articles.date_uploaded <= UTC_TIMESTAMP()
 					AND attachments.ext IN (".$formats.")";
 		// category url
