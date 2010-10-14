@@ -1165,7 +1165,8 @@
 		$per_page 	= $config_layout['per_page'];
 		$page_no 	= (isset($_GET['page'])) ? (int)$_GET['page'] : '1';
 		$from 		= (($page_no * $per_page) - $per_page);
-		$query_paginated = $query." LIMIT ".(int)$from.", ".(int)$per_page;	
+		// no pagination if per page value set to 0
+		$query_paginated = (!empty($per_page)) ? $query." LIMIT ".(int)$from.", ".(int)$per_page : $query ;	
 		
 		// run query
 		$conn = reader_connect();
@@ -1173,7 +1174,7 @@
 		// get total results
 		$total_result 	= $conn->query($query);
 		$total_articles = $total_result->num_rows;
-		$total_pages 	= ceil($total_articles / $per_page);
+		$total_pages 	= (!empty($per_page)) ? ceil($total_articles / $per_page) : 1 ;
 		
 		// get a complete id list of returned articles for filtered results
 		$id_list 	= array();

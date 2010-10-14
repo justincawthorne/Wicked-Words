@@ -525,6 +525,9 @@ div#comment_errors ul li{
 	border: solid 1px #eee;
 	background-color: #fff;
 }
+#page_nav.front_page_nav span {	
+	width: 25%;
+}
 #page_nav span#previous{
 	float: left;	
 }
