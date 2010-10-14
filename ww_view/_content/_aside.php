@@ -60,7 +60,6 @@
 	
 	$popular_articles 		= get_articles_basic($config['layout']['url_style'],'','view_count DESC','5');
 	
-	
 // feeds - this is slightly different - we'll write out the html and put it in a variable
 	
 	$feeds_img = (file_exists(WW_ROOT.'/ww_view/_img/feed-icon16x16.png')) 

@@ -1527,6 +1527,47 @@ function insert_favicon($theme = 'default') {
 	}
 
 /**
+ * show_front_nav
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+ 
+	function show_front_nav($total) {
+		// page params
+		$current_page 	= (empty($_GET['page'])) ? '1' : (int)$_GET['page'] ;
+		$previous_page	= ($current_page > 1) ? $current_page-1 : 0 ;
+		$next_page		= ($current_page < $total) ? $current_page+1 : 0 ;
+		// get url and strip page number if needed
+		$url = current_url();
+		$pattern = "%/page/[0-9]+%";
+		$url = preg_replace($pattern,'',$url);
+		// build html
+		$html = '
+		<!-- listing navigation -->
+		
+		<div id="page_nav" class="front_page_nav">';
+		if(!empty($previous_page)) { 
+			$html .= '
+				<span id="previous">
+					<a href="'.$url.'page/'.$previous_page.'/" title="show newer posts">newer</a>
+				</span>'; 
+		}
+		if(!empty($next_page)) { 
+			$html .= '
+				<span id="next">
+					<a href="'.$url.'page/'.$next_page.'/" title="show older posts">older</a>
+				</span>'; 
+		}		
+		$html .= '
+		</div>'."\n";
+		return $html;
+	}
+
+/**
  * format_feeds_list
  * 
  * 

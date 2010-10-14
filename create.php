@@ -295,7 +295,7 @@ include_once('ww_config/model_functions.php');
 	CREATE TABLE IF NOT EXISTS settings (
 	  element_name varchar(30) NOT NULL,
 	  property_name varchar(30) NOT NULL,
-	  property_value varchar(255) default NULL,
+	  property_value text default NULL,
 	  default_value varchar(255) default NULL,
 	  formtype varchar(20) default NULL,
 	  options varchar(255) default NULL,

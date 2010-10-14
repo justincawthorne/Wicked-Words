@@ -120,17 +120,14 @@ if(!file_exists('../ww_config/model_functions.php')) {
 					case 'latest_month':
 					
 					// get latest article to check dates
-					$config_per_page = $config['layout']['per_page'];
-					$config['layout']['per_page'] = 1;
-					$latest_article = get_articles($config['layout']);
-					
+					$latest_article = get_articles_basic($config['layout']['url_style'],0,0,1);
+
 					// configure date parameters
 					$latest_ts = strtotime($latest_article[0]['date_uploaded']);
 					$_GET['month'] = date('m',$latest_ts);
 					$_GET['year'] = date('Y',$latest_ts);
-					
+
 					// use front list style setting
-					$config['layout']['per_page'] = $config_per_page;
 					$config['layout']['list_style'] = $config['front']['front_list_style'];
 					$articles = get_articles($config['layout']);
 					break;

@@ -503,7 +503,8 @@ div#comment_errors ul li{
 #page_nav.listing_page_nav {
 }
 #page_nav.article_page_nav {
-	
+}
+#page_nav.front_page_nav {	
 }
 #page_nav ul{
 	width: 70%;

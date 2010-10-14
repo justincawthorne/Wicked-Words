@@ -297,10 +297,11 @@
 
 	function get_articles_basic(	$url_style = 'blog',
 									$where = '', 
-									$order = 'date_uploaded DESC', 
+									$order = '', 
 									$limit = '10'
 								) {
 		$conn = reader_connect();
+		$order = (!empty($order)) ? ' ORDER BY '.$order : ' ORDER BY date_uploaded DESC' ; 
 		$query = "SELECT
 					articles.id, 
 				 	articles.title, 
@@ -309,10 +310,10 @@
 					categories.url AS category_url
 				FROM articles 
 					LEFT JOIN categories ON articles.category_id = categories.id 
-				WHERE status = 'P'
+				WHERE status IN ('A','P')
 					AND date_uploaded <= UTC_TIMESTAMP()";
 		$query .= (!empty($where)) ? ' AND '.$where : '' ;
-		$query .= ' ORDER BY '.$order;
+		$query .= $order;
 		$query .= (!empty($limit)) ? ' LIMIT 0,'.$limit : '' ;
 		$result = $conn->query($query);
 		$data = array();

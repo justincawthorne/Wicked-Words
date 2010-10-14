@@ -192,9 +192,15 @@
 			$_GET['page_name'] = 'listing';
 			return true;	
 		
+		// page number for a non listing page
+		} elseif(isset($_GET['page'])) {
+			
+			$_GET['page_name'] = (isset($_GET['page_name'])) ? $_GET['page_name'] : 'front';
+			return true;
+			
 		// if anything else has been requested we sure can't find it
 		} elseif(!empty($urldata)) {
-			
+
 			show_404($urldata);
 			return false;
 			
@@ -294,7 +300,7 @@
 			allowed values for first position defined first_pos array - if any other value 
 			is sent then a string is assumed to be a category, while an integer is assumed to be a year
 		*/
-		$first_pos = array('author','admin','download','id', 'feeds','feed','podcast','rss','rss-external',
+		$first_pos = array('author','admin','download','id', 'feeds','feed','page','podcast','rss','rss-external',
 				'search','sitemap','tag');
 	
 		// now start checking for valid requests in the url string
@@ -1103,7 +1109,7 @@
 		if (isset($_GET['tag_id'])) {
 			$query .= " LEFT JOIN tags_map ON tags_map.article_id = articles.id";
 		}
-		$query .= " WHERE status = 'P'
+		$query .= " WHERE status IN ('A','P')
 					AND date_uploaded <= UTC_TIMESTAMP()";
 		// author id
 		if (isset($_GET['author_id'])) {
@@ -1169,7 +1175,7 @@
 		$total_articles = $total_result->num_rows;
 		$total_pages 	= ceil($total_articles / $per_page);
 		
-		// get a complete id list of return articles
+		// get a complete id list of returned articles for filtered results
 		$id_list 	= array();
 		while($total_row = $total_result->fetch_assoc()) {
 			$id_list[] = $total_row['id'];
@@ -1273,7 +1279,7 @@
 					LEFT JOIN attachments ON attachments_map.attachment_id = attachments.id
 					LEFT JOIN authors ON articles.author_id = authors.id 
 					LEFT JOIN categories ON articles.category_id = categories.id 
-				WHERE articles.status = 'P'
+				WHERE articles.status IN ('A','P')
 					AND articles.date_uploaded <= UTC_TIMESTAMP()
 					AND attachments.ext IN (".$formats.")";
 		// category url
