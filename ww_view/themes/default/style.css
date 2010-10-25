@@ -286,6 +286,7 @@ p.summary {
 	float: right;
 }
 .center {
+	display: block;
 	margin: 10px auto;
 	text-align: center;
 	overflow: auto;

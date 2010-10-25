@@ -91,8 +91,15 @@
 			// iframe height
 			
 			var theFrame = $("#image_browser_frame", parent.document.body);
-			theFrame.height($(document.body).height() + 280); 
+			theFrame.height($(document.body).height() + 280);
 			
+			// toggle image alignment setting
+			$("select#align").change(function(){
+				var style = $(this).val();
+				$(".image_wrapper img").removeClass('left center right');
+				$(".image_wrapper img").addClass(style);
+			});
+
 		});
 		
 		// image browser popup
@@ -234,23 +241,35 @@
 	</form>
 	
 <?php
-
 // show paging form
-
+/*
 	if($total_pages > 1) {
 		echo '
 		<form action="'.$url.'" method="post" name="paging_form" id="paging_form">
-		<p>page: <select name="page" id="page" onchange="location.href=this.options[selectedIndex].value">';
+		<p><select name="page" id="page" onchange="location.href=this.options[selectedIndex].value">';
 		for ($p = 1; $p <= $total_pages; $p++) {
 			$page_selected = ($p == $page) ? ' selected="selected"' : '' ;
 			echo '
 			<option value="'.$url.'&page='.$p.'"'.$page_selected.'>&nbsp;'.$p.'</option>';
 		}
 		echo '
-		</select> of '.$total_pages.'&nbsp;
+		</select> of '.$total_pages.' pages
 		</p>
 		</form>';
-	}
+	}	
+*/
+// show alignment select form
+
+	echo '
+	<form action="'.$url.'" method="post" name="alignment_form" id="alignment_form">
+	<p><select name="align" id="align">
+			<option value="left">left</option>
+			<option value="center">center</option>
+			<option value="right">right</option>
+		</select> align images
+	</p>
+	</form>
+	';	
 	
 // show images
 
@@ -283,6 +302,23 @@
 		
 	echo '
 		</div>'; // close browser wrapper
+
+// show paging form
+
+	if($total_pages > 1) {
+		echo '
+		<form action="'.$url.'" method="post" name="paging_form" id="paging_form">
+		<p><select name="page" id="page" onchange="location.href=this.options[selectedIndex].value">';
+		for ($p = 1; $p <= $total_pages; $p++) {
+			$page_selected = ($p == $page) ? ' selected="selected"' : '' ;
+			echo '
+			<option value="'.$url.'&page='.$p.'"'.$page_selected.'>&nbsp;'.$p.'</option>';
+		}
+		echo '
+		</select> of '.$total_pages.' pages
+		</p>
+		</form>';
+	}
 	
 ?>
 </body>

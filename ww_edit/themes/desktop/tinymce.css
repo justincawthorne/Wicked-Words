@@ -92,37 +92,37 @@ body.mceContentBody {
 	font-size: 0.75em;
 	line-height: 1.25em;
 }
-.mceContentBody .imagecaption {
-	background-color: #AB9682;
-	font-family: arial;
+.mceContentBody .image_caption {
+	background-color: #efefef;
+	border: solid 1px #ccc;
 	text-align: center;
-	padding-bottom: 4px;
-	font-size: 0.875em;
+	padding: 4px;
 }
-.mceContentBody .imagecaption h1 {
-	margin-bottom: 0px;
-}
-.mceContentBody .imagecaption p {
-	color: #333333;
+.mceContentBody .image_caption p.title {
 	font-weight: bold;
+}
+.mceContentBody .image_caption p {
+	color: #333333;
 	margin-top: 0px;
 	margin-bottom: 2px;
+}
+.mceContentBody img {
+	border: none;
 }
 .mceContentBody .left {
 	margin-right: 10px;
 	margin-top: 4px;
 	margin-bottom: 4px;
-	border: none;
 	float: left;
 }
 .mceContentBody .right {
 	margin-left: 10px;
 	margin-top: 4px;
 	margin-bottom: 4px;
-	border: none;
 	float: right;
 }
 .mceContentBody .center {
+	display: block;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	margin-left: auto;
