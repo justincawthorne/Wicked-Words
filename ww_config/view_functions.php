@@ -1235,7 +1235,9 @@ function insert_favicon($theme = 'default') {
 			echo '<p>no comments</p>';
 		} else {
 			foreach($article_comments as $comment) {
-
+				
+				$comment_poster = (empty($comment['poster_link'])) ? $comment['poster_name']
+					: '<a href="'.$comment['poster_link'].'">'.$comment['poster_name'].'</a>'; ;
 				$author_style = (!empty($comment['author_id'])) ? ' author_comment' : '' ;
 				$reply_style = (!empty($comment['reply_id'])) ? ' reply_comment' : '' ;	
 				echo '
@@ -1243,7 +1245,7 @@ function insert_favicon($theme = 'default') {
 			<div class="comment'.$author_style.$reply_style.'" id="comment_wrapper_'.$comment['id'].'">
 				<a id="comment_'.$comment['id'].'"></a>
 				<p class="comment_header">
-					<span class="comment_name">'.$comment['poster_name'].'</span>
+					<span class="comment_name">'.$comment_poster.'</span>
 					<span class="comment_date"> '.date('d M Y',strtotime($comment['date_uploaded'])).'</span>
 					<span class="comment_time"> '.date('H:i',strtotime($comment['date_uploaded'])).'</span>
 				</p>';
