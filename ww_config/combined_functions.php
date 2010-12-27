@@ -584,7 +584,7 @@
 		$details['title'] 		= $pathinfo['basename'];
 		$details['path'] 		= $pathinfo['dirname'];
 		$details['filename'] 	= $pathinfo['basename'];
-		$details['ext'] 		= $pathinfo['extension'];
+		$details['ext'] 		= strtolower($pathinfo['extension']);
 		if(function_exists('finfo_open')) {
 			$finfo = new finfo;
 			$details['mime'] 	= $finfo->file($filepath, FILEINFO_MIME);
@@ -599,7 +599,7 @@
 		$details['author_name']	= $_SESSION[WW_SESS]['name'];
 		// additional details for an image
 		$img = array('jpg','gif','jpeg','png');
-		if(in_array($pathinfo['extension'], $img)) {
+		if(in_array($details['ext'], $img)) {
 			$img_details = getimagesize($filepath);
 			$details['width'] 	= $img_details[0];
 			$details['height'] 	= $img_details[1];

@@ -81,22 +81,22 @@ a {
 
 
 
-#content #bouncer_loginform {
+#content .bouncer_form {
 	margin-top: 20px;
 	background-color: #f4f4f4;
 	padding-top: 2px;
 	padding-bottom: 2px;
 }
 
-#content #bouncer_loginform label {
+#content .bouncer_form label {
 	font-weight: bold;
 	color: #660000;
 	margin-top: 12px;
 	margin-bottom: 2px;
 }
-#content #bouncer_loginform input[type="text"],
-#content #bouncer_loginform input[type="email"],
-#content #bouncer_loginform input[type="password"] {
+#content .bouncer_form input[type="text"],
+#content .bouncer_form input[type="email"],
+#content .bouncer_form input[type="password"] {
 	border: solid 1px #999;
 	padding: 2px;
 	margin-bottom: 12px;
@@ -105,29 +105,29 @@ a {
 	height: 22px;
 	text-align: center;
 }
-#content #bouncer_loginform input[type="text"]:focus,
-#content #bouncer_loginform input[type="email"]:focus,
-#content #bouncer_loginform input[type="password"]:focus {
+#content .bouncer_form input[type="text"]:focus,
+#content .bouncer_form input[type="email"]:focus,
+#content .bouncer_form input[type="password"]:focus {
 	border: solid 1px #660000;
 	height: 22px;
 }
-#content #bouncer_loginform #pass {
+#content .bouncer_form #pass {
 }
-#content #bouncer_loginform #email {
+#content .bouncer_form #email {
 }
-#content #bouncer_loginform input[type="checkbox"] {
+#content .bouncer_form input[type="checkbox"] {
 	width: 24px;
 	margin: 0px;
 	padding: 0;
 	vertical-align: middle;
 }
-#content #bouncer_loginform label[for="remember"] {
+#content .bouncer_form label[for="remember"] {
 	margin: 0px;
 	padding: 0;
 	vertical-align: middle;
 
 }
-#content #bouncer_loginform input[type="submit"]:focus {
+#content .bouncer_form input[type="submit"]:focus {
 	color: #660000;
 }
 

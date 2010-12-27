@@ -74,7 +74,7 @@
  * bouncer_logout()
  * 
  * this ensures that cookies and sessions created by the built in 'bouncer'
- * login functon are removed - this function should be called before any pta logoug
+ * login functon are removed - this function should be called before any pta logout
  * function otherwise the user won't be fully logged out
  * 
  * this version of the inbuilt logout function mirrors the one included in
