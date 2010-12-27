@@ -2108,6 +2108,35 @@
  */
 
 /**
+ * import_data
+ * 
+ * 
+ * 
+ * 
+ */
+
+	function import_data($url) {
+		if(empty($url)) {
+			return false;
+		}
+		$ch = curl_init();
+		$timeout = 5; // set to zero for no timeout
+		curl_setopt ($ch, CURLOPT_URL, $url);
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		if(curl_errno($ch)) {
+			curl_close($ch);
+			return false;
+		}
+		$data = curl_exec($ch);
+		curl_close($ch);
+		if($data === false) {
+			return false;
+		}
+		return $data;	
+	}
+
+/**
  * import_rss
  * 
  * 
@@ -2121,21 +2150,17 @@
 		if(empty($url)) {
 			return false;
 		}
-		$ch = curl_init();
-		$timeout = 5; // set to zero for no timeout
-		curl_setopt ($ch, CURLOPT_URL, $url);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		if($data == false) {
+		$data = import_data($url);
+		if($data === false) {
 			return false;
 		}
 		$xml = @simplexml_load_string($data);
-		if($xml == false) {
+		if( ($xml == false) || (empty($xml)) || ($xml->error) ) {
 			return false;
 		}
 		$articles = array();
+		$total_items = count($xml->channel->item);
+		$limit = ($total_items < $limit) ? $total_items : $limit ;
 		for($i = 0; $i < $limit; $i++) {
 			$articles[] = array(
 			    'title' 		=> (string)$xml->channel->item[$i]->title,

@@ -1726,6 +1726,31 @@ function insert_favicon($theme = 'default') {
 	}
 
 /**
+ * get_twitter_userid
+ * 
+ * 
+ * 
+ * 
+ */
+
+	function get_twitter_userid($username) {
+		if(empty($username)) {
+			return false;
+		}
+		$url = 'http://api.twitter.com/1/statuses/user_timeline.xml';
+		$url .= '?screen_name='.$username.'&count=1&trim_user=1';
+		$data = import_data($url);
+		if($data === false) {
+			return false;
+		}
+		$xml = @simplexml_load_string($data);
+		if ($xml->error) {
+			return false;
+		}
+		return $xml->status->user->id;
+	}
+
+/**
  * show_twitter_feed
  * 
  * 
@@ -1738,7 +1763,9 @@ function insert_favicon($theme = 'default') {
 		if(empty($username)) {
 			return false;
 		}
-		$url = 'http://twitter.com/statuses/user_timeline/'.$username.'.rss';
+		// $user_id = get_twitter_userid($username);
+		// $url = 'http://api.twitter.com/1/statuses/user_timeline.rss?user_id='.$user_id.'&count='.$limit;
+		$url = 'http://api.twitter.com/1/statuses/user_timeline.rss?count='.$limit.'&screen_name='.$username;
 		$tweets = import_rss($url, $limit);
 		if(empty($tweets)) {
 			return false;
@@ -1750,10 +1777,6 @@ function insert_favicon($theme = 'default') {
 			$tweet_date = '<a href="'.$tweet['link'].'">'.date('F d \a\t H:i',strtotime($tweet['date'])).'</a>';
 			// get rid of the 'username: ' prepending each tweet
 			$tweet_text = str_replace($username.": ", "", $tweet['description']);
-			// replace @replies with link to other user's Twitter page
-			//$reply_pattern = '/@([A-Za-z0-9_-]+) /';
-			//$reply_link = '<a href="http://twitter.com/$1/" target="_blank">@$1</a> ';
-			//$tweet_text = preg_replace($reply_pattern, $reply_link, $tweet_text);
 			$tweet_text = twitterify($tweet_text);
 			// output
 			$html .= '
