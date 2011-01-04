@@ -246,19 +246,35 @@ function insert_links($links_array = array()) {
  * 
  */	
 	
-function insert_css($theme = 'default') {
+function insert_css($theme = '/default') {
 	// set paths
 	$theme_folder = "/ww_view/themes".$theme;
 	$css = '
 	<!-- css -->';
 	
-	// use structure.css if provided, otherwise use dynamic structure
+	// build path, with parameters, to compiled css file
+
+	$stylesheet_path = WW_REAL_WEB_ROOT.'/ww_view/css.php?theme='.clean_start_slash($theme);
+	
+	// if a dedicated 'page name' css file exists
+	if(file_exists(WW_ROOT.$theme_folder.'/'.$_GET['page_name'].'.css')) {
+		$stylesheet_path .= '&page_name='.$_GET['page_name'];
+	}
+
+	// if a dedicated category css file exists
+	if( (isset($_GET['category_url'])) && (file_exists(WW_ROOT.$theme_folder.'/'.$_GET['category_url'].'.css')) ) {
+		$stylesheet_path .= '&category_url='.$_GET['category_url'];	
+	}
+
+	// build css link
+	$css .= '
+	<link rel="stylesheet" type="text/css" href="'.$stylesheet_path.'" />'."\n";
+
+/*	// old code
+	// use structure.css if provided
 	if (file_exists(WW_ROOT.$theme_folder.'/structure.css')) {
 		$css .= '
 	<link rel="stylesheet" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/structure.css" />'."\n";
-	} else {
-		$css .= '
-	<link rel="stylesheet" type="text/css" href="'.WW_REAL_WEB_ROOT.'/ww_view/themes/structure_css.php" />'."\n";
 	}
 	
 	// styles
@@ -280,7 +296,8 @@ function insert_css($theme = 'default') {
 		<link rel="stylesheet" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/'.$_GET['category_url'].'.css" />'."\n";
 		}
 	}
-	
+*/
+
 	// IE 7 fixes
 	if (file_exists(WW_ROOT.$theme_folder.'/ie7.css')) {
 		$css .= '

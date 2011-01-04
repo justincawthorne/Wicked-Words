@@ -16,6 +16,17 @@
 			redirect_url
 			show_404
 			current_url
+			
+		css
+		
+			compile_css
+			
+		cache
+		
+			stop_timer
+			start_caching
+			end_caching
+			clear_cached_page
 		
 		detection
 		
@@ -473,7 +484,7 @@
 		return "loaded in ".$elapsed." milliseconds";
 	}
 
-	function start_caching($config_cache, $start = '') {
+	function start_caching($config_cache = '', $start = '') {
 	    if(empty($start)) {
 	    	$start = time() + microtime();
 	    }
@@ -517,11 +528,14 @@
 		}
 	}
 
-	function end_caching($fp, $start) {
+	function end_caching($fp, $start = '') {
 		if(!empty($fp)) {
 			echo "
-			<!-- this page was cached on ".date('r')."-->
-			<!-- uncached page ".stop_timer($start)." -->";
+			<!-- this page was cached on ".date('r')."-->";
+			if(!empty($start)) {
+				echo "
+				<!-- uncached page ".stop_timer($start)." -->";
+			}
 			// open the cache file for writing 
 			flock($fp, LOCK_UN); // unlock the file
 			// save the contents of output buffer to the file

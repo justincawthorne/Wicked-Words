@@ -1,0 +1,186 @@
+/* --- article tags / attachments --- */
+
+ul#article_tags,
+ul#article_attachments {
+	overflow: auto;
+	clear: both;
+}
+ul#article_tags li:first-child,
+ul#article_attachments li:first-child {
+	font-weight: bold;
+}
+ul#article_tags li,
+ul#article_attachments li {
+	float: left;
+	margin-right: 12px;
+}
+
+/*
+	--- comments ------------------------
+*/
+
+#comments_wrapper {
+	
+}
+#comments_wrapper h2 {
+
+}
+div.comment {
+	margin: 4px 24px;
+	border-bottom: dotted 1px #ccc;
+	padding: 0px;
+	
+}
+div.reply_comment {
+	margin: 12px;
+	margin-left: 24px;
+	border: solid 1px #eee;
+	padding: 8px;
+	
+}
+div.author_comment {
+	background-color: #f0f4f5;    
+	border: solid 1px #739999;
+    padding: 0px 8px;	
+}
+div.comment p {
+	line-height: 1.0em;
+	margin: 8px 0;	
+}
+p.comment_header {
+
+}
+span.comment_name {
+	font-weight: bold;
+}
+span.comment_date {
+}
+span.comment_time:before {
+	content: ' at ';
+}
+span.comment_time {
+
+}
+p.comment_body {
+	color: #333;
+}
+p.reply_link {
+	text-align: right;
+}
+p.reply_link a {
+	color: #aaa;
+}
+
+/* --- comment form reply --- */
+
+div#reply_text {
+	margin-left: 18px;
+	background-color: #eee;
+}
+div#reply_text p {
+	line-height: 1.25em;
+	margin: 0;
+}
+div#reply_text p.reply_header{
+	font-weight: bold;
+	padding: 4px;
+}
+div#reply_text p.reply_body{
+	padding: 4px;
+}
+div#reply_text p.cancel_reply{
+	padding: 4px;
+	text-align: right;
+	border-bottom: solid 1px #ccc;
+}
+
+/* --- comment form --- */
+
+form#comment_form {
+	padding: 12px 24px;
+	background-color: #eee;
+	border: solid 1px #ddd;
+}
+form#comment_form label {
+	width: 100px;
+	display: inline-block;
+	vertical-align: top;
+	text-align: right;
+	font-weight: bold;
+	color: #666;
+}
+form#comment_form input,
+form#comment_form textarea {
+	background-color: #fff;
+	border: solid 1px #aaa;	
+	padding: 2px;
+}
+form#comment_form input:focus,
+form#comment_form textarea:focus {
+	background-color: #efefef;
+	border: solid 1px #666;
+}
+form#comment_form input#comment_answer {
+	
+}
+form#comment_form input[type="text"] {
+	
+}
+form#comment_form input[type="submit"] {
+	margin-left: 104px;
+	background-color: #eee;
+	border-style: outset;
+}
+
+span#comment_question {
+	color: #666;
+}
+span#comment_question span {
+	font-weight: bold;
+}
+
+/* --- comment errors --- */
+
+div#comment_errors {
+	border: solid 1px #cc0000;
+	width: auto;
+	padding: 8px;
+	margin-left: 24px;
+	width: 366px;
+	background-color: #eee;
+}
+div#comment_errors ul {
+	margin: 0;
+	padding: 0;	
+}
+div#comment_errors ul li{
+	
+}
+
+/*
+	--- sharing bookmarks ------------------------
+*/
+
+#sharing_bookmarks {
+	width: 220px;
+	overflow: hidden;
+	padding: 4px;
+	float: right;
+	margin: 0px;
+}
+#sharing_bookmarks li {
+	float: right;
+	margin: 0px;
+}
+#sharing_bookmarks li img {
+	margin: 3px;
+}
+#sharing_bookmarks li a {
+	width: 22px;
+	height: 22px;
+	display: block;
+	border: solid 1px #8f0002;
+}
+#sharing_bookmarks li a:hover {
+	border: solid 1px #cc0000;
+}
