@@ -30,6 +30,7 @@ include_once('ww_config/model_functions.php');
 			if($author_pass != $_POST['author_pass_confirm']) {
 				$error = '<p>Passwords don\'t match</p>';
 			}
+			$hash_pass = hash_password($author_pass);
 			
 			// site details
 			
@@ -63,7 +64,7 @@ include_once('ww_config/model_functions.php');
 						'".$conn->real_escape_string($author_name)."',
 						'".$conn->real_escape_string($author_url)."',
 						'".$conn->real_escape_string($author_email)."',
-						'".$conn->real_escape_string($author_pass)."'
+						'".$conn->real_escape_string($hash_pass)."'
 					)";
 			$result = $conn->query($query);
 			if(!$result) {
@@ -192,7 +193,7 @@ include_once('ww_config/model_functions.php');
 	  summary varchar(255) default NULL,
 	  biography text,
 	  email varchar(80) NOT NULL default '',
-	  pass varchar(10) NOT NULL default '',
+	  pass varchar(140) NOT NULL default '',
 	  guest_flag tinyint(1) NOT NULL default 0,
 	  guest_areas varchar(50) default NULL,
 	  sub_expiry datetime NOT NULL default '0000-00-00 00:00:00',

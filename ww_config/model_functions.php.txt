@@ -115,6 +115,26 @@
  	}
 
 /**
+ * hash_password()
+ * 
+ * function for securely 'hashing' a password
+ * 
+ * @param	string	$password		entered password
+ * @return	string	$hash_pass		hashed password
+ */
+
+	function hash_password($password) {
+		if(empty($password)) {
+			return false;
+		}
+		// create the salt value using the length of the entered password
+		$len = 2 * (strlen($newpass));
+		$salt 	= substr(md5(uniqid(rand(), true)), 0, $len);
+		$hash_pass 	= $salt.hash("sha256",$salt.$newpass);
+		return $hash_pass;
+	}
+	
+/**
  * get_settings()
  * 
  * retrieves all details from the settings table in the database

@@ -1712,6 +1712,7 @@
 		$contact_flag = ((isset($_POST['contact_flag'])) && (!empty($_POST['contact_flag']))) ? 1 : 0 ;
 		// create a password
 		$pass = ((!isset($_POST['pass'])) && (empty($_POST['pass']))) ? substr(md5(time()),0,8) : $_POST['pass'] ;
+		$hash_pass = hash_password($pass);
 		// access level
 		switch($_POST['author_level']) {
 			case 'author':
@@ -1757,7 +1758,7 @@
 					'".$conn->real_escape_string($summary)."',
 					'".$conn->real_escape_string($biography)."',
 					'".$conn->real_escape_string($email)."',
-					'".$conn->real_escape_string($pass)."',
+					'".$conn->real_escape_string($hash_pass)."',
 					'".$conn->real_escape_string($sub_expiry)."',
 					".(int)$guest_flag.",
 					'".$conn->real_escape_string($guest_areas)."',
@@ -1769,6 +1770,27 @@
 			return $conn->error;
 		} else {
 			$new_id = $conn->insert_id;
+			// get config settings
+			$config = get_settings();
+			// send an email to the user
+			$mail = new PHPMailerLite();
+			$mail->SetFrom($config['admin']['email'], $config['site']['title']);
+			$mail->AddAddress($email, $name);
+			$mail->AddAddress($config['admin']['email'], $config['site']['title'].' admin');
+			$mail->Subject = "You have been added as an author to ".$config['site']['title'];
+			$mail->Body = "Dear ".$name.","."\n\n";
+			$mail->Body .= "Your details for ".$config['site']['title']." have been set up. Here's everything we have on you:"."\n\n";
+			$mail->Body .= "\t"."Name: "."\n\t\t".$name."\n\n";
+			$mail->Body .= "\t"."Email address: "."\n\t\t".$email."\n\n";
+			$mail->Body .= "\t"."Password: "."\n\t\t".$pass."\n\n";
+			$mail->Body .= (!empty($summary)) ? "\t"."Summary: "."\n\t\t".$summary."\n\n" : '' ;
+			$mail->Body .= (!empty($biography)) ? "\t"."Biography: "."\n\t\t".$biography."\n\n" : '' ;
+			$mail->Body .= "\t"."Access level: "."\n\t\t".$_POST['author_level']."\n\n";
+			$block_status = (!empty($_POST['block_author'])) ? " DO NOT" : '' ;
+			$mail->Body .= "\t"."You currently".$block_status." have access to the site"."\n\n";
+			$contact_status = (empty($contact_flag)) ? " NOT" : '' ;
+			$mail->Body .= "\t"."You are currently".$contact_status." contactable by readers of the site"."\n";
+			$mail->Send();
 			return $new_id;
 		}		
 	}
@@ -1912,6 +1934,28 @@
 	}
 
 /**
+ * get_hashed_password
+ * 
+ * function for checking an entered password against
+ * the hashed (database stored) version of the password
+ * 
+ */	
+
+	function check_password($text_pass, $hash_pass) {
+		if( (empty($text_pass)) || (empty($hash_pass)) ) {
+			return false;
+		}
+		// get the salt value
+		$len = 2 * (strlen($text_pass));
+		$salt = substr($hash_pass, 0,$len);
+		// hash the text_pass value
+		$hash_text_pass = $salt.hash("sha256",$salt.$text_pass);
+		// create the salt value using the length of the entered password
+		$check = (strcmp($hash_text_pass,$hash_pass) == 0) ? 1 : 0 ;
+		return $check;		
+	}
+
+/**
  * change_password
  * 
  * 
@@ -1939,6 +1983,7 @@
 			return 'confirm password must be entered';
 		}
 		// check new pass and confirm pass match
+		
 		$new_check = (strcmp($_POST['new_pass'],$_POST['confirm_pass']) == 0) ? 1 : 0 ;
 		if(empty($new_check)) {
 			return 'new pass and confirm pass do not match';
@@ -1954,13 +1999,22 @@
 		if(empty($author)) {
 			return 'selected author not found';
 		}
-		$password_check = (strcmp($_POST['old_pass'],$author['pass']) == 0) ? 1 : 0 ;
+		// create hash value of existing password
+		/*
+		$len = 2 * (strlen($_POST['old_pass']));
+		$salt = substr($author['pass'], 0,$len);
+		$old_hash_pass 	= $salt.hash("sha256",$salt.$_POST['old_pass']);
+		// check existing password was entered correctly
+		$password_check = (strcmp($old_hash_pass,$author['pass']) == 0) ? 1 : 0 ;
+		*/
+		$password_check = check_password($_POST['old_pass'], $author['pass']);
 		if(empty($password_check)) {
 			return 'existing password incorrect';
 		}
 		// we can now proceed
+		$hash_pass = hash_password($_POST['new_pass']);
 		$update = "UPDATE authors SET 
-					pass = '".$conn->real_escape_string($_POST['new_pass'])."'
+					pass = '".$conn->real_escape_string($hash_pass)."'
 					WHERE id = ".(int)$author_id;
 		$update_result = $conn->query($update);
 		if(!$update_result) {
