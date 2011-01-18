@@ -322,10 +322,12 @@
 	function mini_login() {
 		
 		global $bouncer_message;
+		global $bouncer_page;
 		
+		$mini_login = '';
 		// html follows
 		if(isset($bouncer_message['error'])) {
-			$mini_login =  "
+			$mini_login .= "
 			<p>".$bouncer_message['error']."</p>";
 		}
 		$mini_login .= 
@@ -348,7 +350,7 @@
 				<input type="submit" name="Submit" value="Login" />
 			</p>
 			<p>
-				<a href="'.WW_BOUNCE_WEB_ROOT.'/pass_form.php?forgotpass">Forgotten your password? Click here.</a>
+				<a href="'.$bouncer_page['password_forgot'].'">Forgotten your password? Click here.</a>
 			</p>
 			
 		</form>';

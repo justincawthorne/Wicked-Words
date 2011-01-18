@@ -266,7 +266,7 @@ if(!file_exists('../ww_config/model_functions.php')) {
 	/*
 		with a builder file we can use a different html structure
 	*/
-	
+
 		if(file_exists($theme_content_folder.'/builder.php')) {
 			
 			include($theme_content_folder.'/builder.php');

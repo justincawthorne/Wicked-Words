@@ -24,7 +24,7 @@
 	    }
 	    $includes = array();
 		foreach($list_php as $add_php) {
-			$includes[] = $add_php['path'].$add_php['name'];
+			$includes[] = $add_php['path'].$add_php['filename'];
 	    }
 	    return $includes;
 	}
@@ -249,6 +249,23 @@ function insert_links($links_array = array()) {
 function insert_css($theme = '/default') {
 	// set paths
 	$theme_folder = "/ww_view/themes".$theme;
+	
+	// smartphone user - don't bother with the other stylesheets
+	
+	if(detect_smartphone() == true) {
+		
+		if (file_exists(WW_ROOT.$theme_folder.'/iphone.css')) {
+			$css = '
+		<link rel="stylesheet" media="screen" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/iphone.css" />
+		<meta name="viewport" content="width=device-width" />'."\n";
+		} else {
+			$css = '
+		<link rel="stylesheet" media="screen" type="text/css" href="'.WW_REAL_WEB_ROOT.'/ww_view/themes/default/iphone.css" />
+		<meta name="viewport" content="width=device-width" />'."\n";			
+		}
+		return $css;
+	}
+	
 	$css = '
 	<!-- css -->';
 	
@@ -269,34 +286,6 @@ function insert_css($theme = '/default') {
 	// build css link
 	$css .= '
 	<link rel="stylesheet" type="text/css" href="'.$stylesheet_path.'" />'."\n";
-
-/*	// old code
-	// use structure.css if provided
-	if (file_exists(WW_ROOT.$theme_folder.'/structure.css')) {
-		$css .= '
-	<link rel="stylesheet" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/structure.css" />'."\n";
-	}
-	
-	// styles
-	if (file_exists(WW_ROOT.$theme_folder.'/style.css')) {
-		$css .= '
-	<link rel="stylesheet" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/style.css" />'."\n";
-	}
-	
-	// page name specific styles
-	if (file_exists(WW_ROOT.$theme_folder.'/'.$_GET['page_name'].'.css')) {
-		$css .= '
-	<link rel="stylesheet" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/'.$_GET['page_name'].'.css" />'."\n";
-	}
-	
-	// category specific styles
-	if(isset($_GET['category_url'])) {
-		if (file_exists(WW_ROOT.$theme_folder.'/'.$_GET['category_url'].'.css')) {
-			$css .= '
-		<link rel="stylesheet" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/'.$_GET['category_url'].'.css" />'."\n";
-		}
-	}
-*/
 
 	// IE 7 fixes
 	if (file_exists(WW_ROOT.$theme_folder.'/ie7.css')) {
@@ -326,16 +315,6 @@ function insert_css($theme = '/default') {
 	<link rel="stylesheet" media="handheld" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/pda.css" />'."\n";
 	}
 	
-	// smartphone user
-	if(detect_smartphone() == true) {
-		
-		if (file_exists(WW_ROOT.$theme_folder.'/iphone.css')) {
-			$css .= '
-		<link rel="stylesheet" media="screen" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/iphone.css" />
-		<meta name="viewport" content="width=device-width" />'."\n";
-		}
-		
-	}
 	return $css;	
 }
 
@@ -1246,6 +1225,7 @@ function insert_favicon($theme = 'default') {
 
 	function show_article_comments($article_comments) {
 		echo '
+		<!-- comments wrapper -->
 		<div id="comments_wrapper">
 			<h2><a id="comments"></a>Comments</h2>';
 		if(empty($article_comments)) {
@@ -1272,7 +1252,9 @@ function insert_favicon($theme = 'default') {
 			</div>';
 			}
 		}
-		echo '</div>';
+		echo '
+		</div> <!-- close comments wrapper -->
+		';
 	}
 
 
@@ -1359,6 +1341,8 @@ function insert_favicon($theme = 'default') {
 		}
 		// show form
 		echo '
+		<!-- comment form wrapper -->
+		<div id="comment_form_wrapper">
 			<h2>Add a comment</h2>
 			'.$adv_text.'
 			
@@ -1392,7 +1376,10 @@ function insert_favicon($theme = 'default') {
 				<input name="submit_comment" id="submit_comment" value="Submit Comment" type="submit"/>
 			</p>
 
-			</form>';
+			</form>
+		</div>
+		<!-- close comment form wrapper -->
+		';
 	}
 	
 /**
