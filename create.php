@@ -419,18 +419,25 @@ label {
 
 // create folders
 
-	if(mkdir("/ww_files/_cache/",0755,true)) {
+	if(@mkdir(WW_ROOT."/ww_files/_cache/",0755,true)) {
 		echo 'created cache folder<br />';		
+	} else {
+		echo 'could not create cache folder<br />';
 	}
-
-	if(mkdir("/ww_files/attachments/",0755,true)) {
+	if(@mkdir(WW_ROOT."/ww_files/attachments/",0755,true)) {
 		echo 'created attachments folder<br />';		
+	} else {
+		echo 'could not create attachments folder<br />';
 	}
-	if(mkdir("/ww_files/images/authors/",0755,true)) {
+	if(@mkdir(WW_ROOT."/ww_files/images/authors/",0755,true)) {
 		echo 'created author images folder<br />';		
+	} else {
+		echo 'could not create author images folder<br />';
 	}
-	if(mkdir("/ww_files/images/thumbs/",0755,true)) {
+	if(@mkdir(WW_ROOT."/ww_files/images/thumbs/",0755,true)) {
 		echo 'created thumbnail images folder<br />';		
+	} else {
+		echo 'could not create thumbnail images folder<br />';
 	}
 
 // get existing tables list
