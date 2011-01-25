@@ -417,6 +417,22 @@ label {
 </head>
 <body>';
 
+// create folders
+
+	if(mkdir("/ww_files/_cache/",0755,true)) {
+		echo 'created cache folder<br />';		
+	}
+
+	if(mkdir("/ww_files/attachments/",0755,true)) {
+		echo 'created attachments folder<br />';		
+	}
+	if(mkdir("/ww_files/images/authors/",0755,true)) {
+		echo 'created author images folder<br />';		
+	}
+	if(mkdir("/ww_files/images/thumbs/",0755,true)) {
+		echo 'created thumbnail images folder<br />';		
+	}
+
 // get existing tables list
 
 	$table_query = "SHOW tables";

@@ -3227,7 +3227,7 @@
 			if (!move_uploaded_file($file['tmp_name'], $upload_file)) {
 				return "Upload error: There was a problem uploading the file";
 			} else {
-				// chmod($upload_file, 0644);
+				chmod($upload_file, 0644);
 				$new_file = array();
 				$new_file['filename'] 	= $filename;
 				$new_file['size'] 	= $file['size'];
@@ -3322,7 +3322,7 @@
 			    if(!empty($setwidth)) {
 			  		return "Image resize: GD extension is not loaded - image cannot be resized";			    	
 			    } else {
-			    	$uploaded = upload_file ($new_file, $location, $filename);
+			    	$uploaded = upload_file($new_file, $location, $filename);
 			    	return $uploaded;
 			    }
 
@@ -3467,7 +3467,7 @@
 			
 			if (!is_dir($location)) {
 				// can we create it?
-				if(!mkdir($location, 0777)) {
+				if(!mkdir($location, 0755)) {
 					return "File check: The directory (".$location.") does not exist";
 				}
 			}

@@ -104,7 +104,7 @@ p, ul, ol, blockquote {
 #header_panel {
 	width: 200px;
 	height: 120px;
-	background-image: url('_img/ww-90.png');
+	background-image: url('/ww_view/themes/default/_img/ww-90.png');
 	background-repeat: no-repeat;
 	background-position: 50% 30px;
 }

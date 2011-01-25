@@ -523,8 +523,8 @@ function insert_favicon($theme = 'default') {
  * 
  */	
 
-	function insert_nav($position = '') {
-		$menu_links = get_links('site_menu');
+	function insert_nav($position = '', $menu_links = '') {
+		$menu_links = (!empty($menu_links)) ? $menu_links : get_links('site_menu') ;
 		if(empty($menu_links)) {
 			return;
 		}
@@ -640,11 +640,13 @@ function insert_favicon($theme = 'default') {
 		}
 		$footer = '
 		<!-- footer section -->
-		<div id="footer">';
-		if(!empty($html)) {
-			$footer .= $html;
-		}
-		$footer .= '
+		<div id="footer">
+			<div id="footer_content">';
+			if(!empty($html)) {
+				$footer .= $html;
+			}
+			$footer .= '
+			</div>
 		</div>';
 		return $footer;
 	}

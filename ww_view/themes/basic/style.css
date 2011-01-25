@@ -102,6 +102,22 @@ p, ul, ol, blockquote {
 #header_link {
 	display: none;
 }
+
+/*
+	--- nav ------------------------
+*/
+
+#navbar_nav {
+
+}
+#nav_links {
+	overflow: auto;
+}
+#nav_links li{
+	float: left;
+	margin-right: 24px;
+}
+
 /*
 	--- article ------------------------
 */
