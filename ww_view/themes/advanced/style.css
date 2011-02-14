@@ -33,6 +33,7 @@ body {
 	/*font-family:  Georgia, Tahoma, Arial,sans-serif;*/
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 100%;
+	background-color: #eee;
 }
 a {
 	text-decoration: none;
@@ -74,9 +75,10 @@ p, ul, ol, blockquote {
 }
 
 
-#outer_wrapper {
-}
-#inner_wrapper {
+#page_wrapper {
+	background-color: #fff;
+	border-left: solid 1px #333;
+	border-right: solid 1px #333;
 }
 
 /*

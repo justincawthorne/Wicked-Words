@@ -243,7 +243,8 @@
 		$url_request = clean_end_slash($url_request);
 		
 		// if nothing is requested this must be the front page
-		if(empty($url_request)) {
+		// index.php added for backwards compatibility
+		if((empty($url_request)) || ($url_request == 'index.php')) {
 			return false;
 		}
 		
@@ -320,7 +321,7 @@
 			//	redirect to admin pages (e.g. www.domain.com/admin/)
 			
 			case $urldata[0] == 'admin':
-				$location = WW_REAL_WEB_ROOT."/ww_edit/index.php";
+				$location = WW_REAL_WEB_ROOT."/ww_edit/admin.php";
 				header('Location: '.$location);
 				exit();
 			break;

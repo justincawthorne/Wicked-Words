@@ -15,8 +15,8 @@
 	the basic theme includes one additional aside: _asides/aside_test.php this is automatically imported by
 	the default aside.php page
 	
-	line 6 > for this example we call the default asides.php file so we have access to all the default
-	asides and we'll also maintain the default $aside_content structure
+	line 6 > in this example we call the default asides.php file - this gives us access to all the default
+	asides and means we can maintain the default $aside_content structure
 	
 	line 8 > here we add our imported aside snippet to the upper array
 	

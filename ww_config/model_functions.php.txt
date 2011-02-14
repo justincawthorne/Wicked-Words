@@ -1,5 +1,5 @@
 <?php
-	error_reporting (E_ALL);
+//	error_reporting (E_ALL);
 /**
  * -----------------------------------------------------------------------------
  * USER EDITABLE VARIABLES
@@ -117,7 +117,7 @@
 /**
  * hash_password()
  * 
- * function for securely 'hashing' a password
+ * function for securely 'hashing' a new password
  * 
  * @param	string	$password		entered password
  * @return	string	$hash_pass		hashed password
@@ -128,12 +128,12 @@
 			return false;
 		}
 		// create the salt value using the length of the entered password
-		$len = 2 * (strlen($newpass));
+		$len = 2 * (strlen($password));
 		$salt 	= substr(md5(uniqid(rand(), true)), 0, $len);
-		$hash_pass 	= $salt.hash("sha256",$salt.$newpass);
+		$hash_pass 	= $salt.hash("sha256",$salt.$password);
 		return $hash_pass;
 	}
-	
+
 /**
  * get_settings()
  * 

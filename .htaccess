@@ -73,6 +73,10 @@
 	RewriteCond %{REQUEST_URI} !([^\.]+)/$
 	RewriteRule ^([^\.]+)$ %{REQUEST_URI}/ [L,R=301]
 	
+# redirect index.php to assembler.php
+
+	RewriteRule ^/?index.php$ ww_view/assembler.php [L]
+	
 # redirect to robots.txt
 
 	RewriteRule ^/?robots.txt$ ww_view/robots.php [L]
@@ -83,19 +87,19 @@
 	
 # extra security to protect files in ww_edit section
 	
-	RewriteRule ^/?ww_edit/!(index.php)([^\.]+)?$ ww_view/index.php [L]
+	RewriteRule ^/?ww_edit/!(admin.php)([^\.]+)?$ ww_view/admin.php [L]
 	RewriteRule ^/?ww_edit/_blocks/(.*)$ ww_view/index.php [L]
 	RewriteRule ^/?ww_edit/_chunks/(.*)$ ww_view/index.php [L]
 	
 	# leave ww_edit/_snippets visible otherwise admin popups get screwed
 	# no need to hide ww_edit/css
 
-#redirect all other URLs to ww_view/index.php for PHP processing	
+#redirect all other URLs to ww_view/assembler.php for PHP processing	
 	
 	# use a slightly different request if we're attempting a download
-	RewriteRule ^/?download/(.*)/(.*)$ ww_view/index.php [L]
+	RewriteRule ^/?download/(.*)/(.*)$ ww_view/assembler.php [L]
 	
 	# otherwise use the following which filters out filenames
-	RewriteRule ^/?([^\.]+)?$ ww_view/index.php [L]
+	RewriteRule ^/?([^\.]+)?$ ww_view/assembler.php [L]
 	
 AddHandler php5-script .php

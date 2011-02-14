@@ -1,6 +1,9 @@
-<?php $date = date('d M Y'); ?>
+<?php 
 
-<div class="snippet">
-	<h6>Today's Date</h6>
-	<p>the date today is <?php echo $date; ?></p>
-</div>
+	$date 	= date('d M Y'); 
+	$title 	= "Today's Date";
+	$content = "<p>the date today is ".$date.'</p>';
+	
+	
+	echo build_snippet($title, $content);
+?>

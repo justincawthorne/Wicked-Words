@@ -7,15 +7,14 @@ html, body {
 body {
 
 }
-#outer_wrapper {
+#page_wrapper {
 	position: relative;
 	min-height: 100%;
 	margin: 0 auto;
 	text-align: left;
-	width: 960px;
-}
-#inner_wrapper {
-	min-height: 100%;
+	width: 940px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 
@@ -61,21 +60,21 @@ body {
 	including borders and padding  */
 	padding-bottom: 60px;
 	width: 100%;
-	width: 960px;
+
 	margin: 0 auto;
 	overflow: auto;
 }
 
 #main_content {
-	width: 640px;
+	width: 100%;
+
 	/*position: relative;*/
 	float: left;
 	overflow: hidden;
 }
 
 #aside {
-	float:right;
-	width:200px;
+	display:none;
 }
 
 

@@ -117,7 +117,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		
 			<div id="header_text">
 				<p>
-					<a href="index.php" title="edit room home page">Wicked Words Edit Room</a>
+					<a href="admin.php" title="edit room home page">Wicked Words Edit Room</a>
 				</p>
 				<small><a href="'.WW_WEB_ROOT.'" title="click here to view your site">'.$site_title.'</a></small>
 			</div>
@@ -148,22 +148,22 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		
 		<div id="nav">
 			<ul id="nav_links">
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=write">Write!</a></li>
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=articles">Articles</a></li>
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=comments">Comments</a></li>
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=write">Write!</a></li>
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=articles">Articles</a></li>
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=comments">Comments</a></li>
 				';
 		
 		if(empty($_SESSION[WW_SESS]['guest'])) { 
 		// author only links	
 			echo '
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=files">Files</a></li>
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=links">Links</a></li>
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=settings">Settings</a></li>';
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=files">Files</a></li>
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=links">Links</a></li>
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=settings">Settings</a></li>';
 		} else {
 		// editor / contributor links
 			echo '
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=images">Images</a></li>
-				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/index.php?page_name=attachments">Attachments</a></li>';
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=images">Images</a></li>
+				<li><a href="'.WW_REAL_WEB_ROOT.'/ww_edit/admin.php?page_name=attachments">Attachments</a></li>';
 		} 
 		echo '
 			</ul>
