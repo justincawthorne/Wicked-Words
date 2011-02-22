@@ -3,9 +3,9 @@
 .mceContentBody ul,
 .mceContentBody ol,
 .mceContentBody li {
-	margin: 0;
+	/*margin: 0;
 	padding: 0;
-	list-style:none;
+	list-style:none;*/
 }
 .mceContentBody h1,
 .mceContentBody h2,
