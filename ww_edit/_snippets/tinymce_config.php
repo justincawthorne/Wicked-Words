@@ -29,7 +29,7 @@ echo '
 		// this ensures the site can be migrated to a new url if needed
 		convert_urls : false,
 		relative_urls : false,
-		remove_script_host : false,
+		remove_script_host : false
 		// need to add ww_files path otherwise url gets messed up
 		// document_base_url : "'.WW_REAL_WEB_ROOT.'/ww_files/" 
 	});

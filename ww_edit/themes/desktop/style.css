@@ -922,7 +922,8 @@ ul.ui-tabs-nav {
 	font-size: 100%;
 }
 ul.ui-tabs-nav li.ui-state-default {
-	display: inline-block;
+	/*display: inline-block;*/
+	display: inline;
 	/*width: 128px;*/
 	font-size: 0.875em;
 	font-weight: bold;

@@ -196,8 +196,9 @@
 	$aside_content = '<iframe style="width: 200px;border: none;" 
 						id="image_browser_frame" 
 						height="1600"
-						frameborder="1" 
+						frameborder="0" 
 						scrolling="auto"
+						allowTransparency="true"
 						src="_content/image_browser.php?sess='.htmlspecialchars(session_id()).'&amp;author_id='.(int)$_SESSION[WW_SESS]['user_id'].'">
 					</iframe>';
 
