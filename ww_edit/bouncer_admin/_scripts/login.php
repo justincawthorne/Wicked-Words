@@ -36,6 +36,16 @@
 		$attempt_login = 1;
 	}
 
+	if( (isset($_COOKIE['ww_c_key'])) && (isset($_COOKIE['ww_c_user'])) ) {
+		$_SESSION[WW_SESS]['logged_in'] = 0;
+		$attempt_login = 1;
+	}
+
+	if(isset($_SESSION['pta']) ) {
+		$_SESSION[WW_SESS]['logged_in'] = 0;
+		$attempt_login = 1;
+	}
+
 /*
 	we only bother processing the login if the user hasn't already logged in -  this enables 
 	us to include login.php on other pages without affecting users already logged in
@@ -59,8 +69,16 @@ if( (empty($_SESSION[WW_SESS]['logged_in'])) && (!empty($attempt_login)) ) {
 			$cookie_key = $_COOKIE['ww_c_key'];
 
 		}
-
 		
+	// pta option
+	
+		if(isset($_SESSION['pta']) ) {
+
+			$user_email = $_SESSION['pta']['email'];
+			$user_pass 	= $_SESSION['pta']['pass'];
+
+		}	
+			
 	// otherwise check form has been submitted
 	
 		if( (!empty($_POST['bounce'])) && ($_POST['bounce'] == md5(WW_BOUNCE_WEB_ROOT)) ) { 			
@@ -102,7 +120,7 @@ if( (empty($_SESSION[WW_SESS]['logged_in'])) && (!empty($attempt_login)) ) {
 				if(!empty($user_pass)) {
 					$len = 2 * (strlen($user_pass));
 					$salt = substr($password_db, 0,$len);
-					$hash_user_pass 	= $salt.hash("sha256",$salt.$user_pass);					
+					$hash_user_pass 	= $salt.hash("sha256",$salt.$user_pass);
 					$password_check = (strcmp($hash_user_pass,$password_db) == 0) ? 1 : 0 ;
 				} elseif(!empty($cookie_key)) {
 					$password_check = (strcmp(md5($cipher.$password_db),$cookie_key) == 0) ? 1 : 0 ;

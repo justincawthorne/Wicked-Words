@@ -746,7 +746,7 @@ form#edit_author_form {
 	background-color: #f4f4f4;
 	color: #666;
 	display: inline-block;
-	float: right;
+	/*float: right;*/
 	line-height: 18px;
 	width: 240px;
 	padding: 4px 4px;

@@ -180,9 +180,10 @@
 		}
 		
 		// finally we creat the new password
-		$len = 2 * (strlen($newpass));
-		$salt 	= substr(md5(uniqid(rand(), true)), 0, $len);
-		$hash_pass 	= $salt.hash("sha256",$salt.$newpass);
+		//$len = 2 * (strlen($newpass));
+		//$salt 	= substr(md5(uniqid(rand(), true)), 0, $len);
+		//$hash_pass 	= $salt.hash("sha256",$salt.$newpass);
+		$hash_pass 	= hash_password($newpass);
 							
 		// update database with new password
 		$update = "UPDATE ".WW_USER_TBL." SET 
@@ -225,11 +226,11 @@
 		return $target_page;	
 	}
 
-	
+
 /**
  * randomstring
  * 
- * generates a random string fpr use when resetting a password
+ * generates a random string for use when resetting a password
  * 
  * 
  */	
