@@ -1718,8 +1718,8 @@
 		// one hour's grace
 		} else {
 			$prev_now = gmdate('Ymdh',strtotime('1 hour ago'));
-			$prev_name = md5($article_id.$prev_now.$salt);
-			$prev_value = md5($salt.$prev_now.$article_id);
+			$prev_name = md5($article['id'].$prev_now.$salt);
+			$prev_value = md5($salt.$prev_now.$article['id']);
 			if(isset($_SESSION['comment_data'][$prev_name]))  {
 				if($_SESSION['comment_data'][$prev_name] != $prev_value)  {
 					$form_data['error'][] = "<!--prev session value not set correctly-->";	
