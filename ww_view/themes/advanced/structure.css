@@ -59,14 +59,13 @@ body {
 	/* padding-bottom should equal height of footer, 
 	including borders and padding  */
 	padding-bottom: 60px;
-	width: 100%;
-
+	width: 960px;
 	margin: 0 auto;
 	overflow: auto;
 }
 
 #main_content {
-	width: 100%;
+	width: 640px;
 
 	/*position: relative;*/
 	float: left;
@@ -74,7 +73,9 @@ body {
 }
 
 #aside {
-	display:none;
+	width: 240px;
+	float: left;
+	border: solid 1px red;
 }
 
 

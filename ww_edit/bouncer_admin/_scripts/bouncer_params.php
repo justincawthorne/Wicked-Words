@@ -71,9 +71,9 @@
 
 // page locations - for redirecting users
 
-	$bouncer_page['password_change'] 	= WW_REAL_WEB_ROOT.'/ww_edit/index.php?changepass';	
+	$bouncer_page['password_change'] 	= WW_REAL_WEB_ROOT.'/ww_edit/admin.php?changepass';	
 	
-	$bouncer_page['password_forgot'] 	= WW_REAL_WEB_ROOT.'/ww_edit/index.php?forgotpass';
+	$bouncer_page['password_forgot'] 	= WW_REAL_WEB_ROOT.'/ww_edit/admin.php?forgotpass';
 	if(isset($_POST['email'])) { $bouncer_page['password_forgot'] .= '&amp;email='.$_POST['email'];}
 
 // optional pages - must be designed by user

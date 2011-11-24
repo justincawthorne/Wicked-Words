@@ -120,6 +120,7 @@
 		$allowed_pages[] = 'links';
 		$allowed_pages[] = 'files';
 		$allowed_pages[] = 'editor';
+		$allowed_pages[] = 'update';
 		
 	}
 	
