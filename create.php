@@ -145,6 +145,8 @@ include_once('ww_config/model_functions.php');
 		seo_title varchar(150) default NULL,
 		seo_desc varchar(255) default NULL,
 		seo_keywords varchar(255) default NULL,
+		redirect_code smallint(3) default NULL,
+		redirect_url varchar(255) default NULL,
 		view_count smallint(6) unsigned NOT NULL default '0',
 		visit_count smallint(6) unsigned NOT NULL default '0',
 		comments_disable tinyint(1) NOT NULL default '0',

@@ -1215,7 +1215,7 @@
 		$data 		= array();
 		while($row = $result->fetch_assoc()) {
 			$row = stripslashes_deep($row);
-			
+			$row['category_url'] = (!empty($row['category_url'])) ? $row['category_url'] : $_GET['category_url'] ;
 			// adjust times to local timezone if necessary
 			$ts = strtotime($row['date_uploaded']);
 			$offset = date('Z');
