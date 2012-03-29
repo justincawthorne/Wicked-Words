@@ -696,8 +696,10 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 		
 		// categories
 		$category_list = get_categories_admin();
+		$page_selected = ($article_data['category_id'] == 0) ? ' selected="selected"' : '' ;
 		$category_select = '
 				<select name="category_id">
+					<option value="0"'.$page_selected.'>PAGE</option>
 				';
 			foreach($category_list as $category) {
 				$c_selected = ($article_data['category_id'] == $category['id']) ? ' selected="selected"' : '' ;

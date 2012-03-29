@@ -317,6 +317,12 @@
  * -----------------------------------------------------------------------------
  */
 
+/**
+ * clear_cache
+ * 
+ * 
+ */	
+
 	function clear_cache() {
 		$cachedir = WW_ROOT."/ww_files/_cache/";
 		$cache_files = get_files($cachedir);
@@ -329,6 +335,12 @@
 		}
 		return $cleaned;
 	}
+
+/**
+ * cache_size
+ * 
+ * 
+ */	
 	
 	function cache_size() {
 		$cachedir = WW_ROOT."/ww_files/_cache/";
@@ -991,7 +1003,7 @@
 		// author id
 		$article_data['author_id'] = (int)$_POST['author_id'];
 		
-		// author id
+		// category_url
 		$article_data['category_url'] = $_POST['category_url'];
 		
 		// category new
@@ -1007,7 +1019,7 @@
 		}
 
 		// error check category
-		if(empty($article_data['category_id'])) {
+		if(!isset($article_data['category_id'])) {
 			$article_data['error'][] = "No category selected (or no new category entered)";
 		}
 		

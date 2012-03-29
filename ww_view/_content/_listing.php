@@ -29,12 +29,16 @@
 			// slightly more complex for categories in case of parent/child categories
 
 			$category_details = get_category_details($_GET['category_id']);
+
+			if($_GET['category_id'] == 0) {
+				$category_details['title'] = 'about';
+			}
 			
 			$parent_category = (!empty($category_details['parent_title'])) 
 				? '<a href="'.WW_WEB_ROOT.'/'.$category_details['parent_url'].'/">'.$category_details['parent_title'].'</a> &gt; ' 
 				: '' ;
 			
-			$page_title_text[] = "filed in ".$category_details['title'];
+			$page_title_text[] = "filed under ".$category_details['title'];
 			$page_header_text[] = $parent_category.$category_details['title'];
 			
 			// add optional link to feed for category

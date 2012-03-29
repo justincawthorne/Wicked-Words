@@ -150,12 +150,14 @@
 		
 		// category url
 		if( (isset($_GET['category_url'])) && (!empty($_GET['category_url'])) ) {
-			$category_id = get_category_id($_GET['category_url']);
-			if(!empty($category_id)) {	
-				$_GET['category_id'] = $category_id;
-			} else {
-				$_GET['page_name'] = '404';
-			}			
+			if(!isset($_GET['category_id'])) {
+				$category_id = get_category_id($_GET['category_url']);
+				if($category_id === false) {	
+					$_GET['page_name'] = '404';
+				} else {
+					$_GET['category_id'] = $category_id;
+				}				
+			}
 		}
 		
 		// tag url
@@ -197,7 +199,7 @@
 			return true;
 					
 		// or did we get a valid author, category, or tag id - or a search, or date request?
-		} elseif( (!empty($author_id)) || (!empty($category_id)) || (!empty($tag_id)) 
+		} elseif( (!empty($author_id)) || (isset($_GET['category_id'])) || (!empty($tag_id)) 
 			|| (isset($_GET['year'])) || (isset($_GET['search'])) ) {
 			
 			$_GET['page_name'] = 'listing';
@@ -312,7 +314,7 @@
 			allowed values for first position defined first_pos array - if any other value 
 			is sent then a string is assumed to be a category, while an integer is assumed to be a year
 		*/
-		$first_pos = array('author','admin','download','id', 'feeds','feed','page','podcast','rss','rss-external',
+		$first_pos = array('about','author','admin','download','id', 'feeds','feed','page','podcast','rss','rss-external',
 				'search','sitemap','tag');
 	
 		// now start checking for valid requests in the url string
@@ -326,6 +328,10 @@
 				exit();
 			break;
 
+			case $urldata[0] == 'about':
+				$_GET['category_url'] = $urldata[0];
+				$_GET['category_id'] = 0;
+			break;
 
 			//	downloads (e.g. www.domain.com/download/mp3/sample/ OR www.domain.com/download/12/)
 			
@@ -685,6 +691,9 @@
 			$data[$cat['id']] = strtolower($cat['url']);
 		}
 		$id = array_search($url,$data);
+		if(empty($id)) {
+			return false;
+		}
 		return $id;
 	}
 
@@ -1133,6 +1142,8 @@
 		// category url
 		if (isset($_GET['category_id'])) {
 			$query .= " AND articles.category_id = ".(int)$_GET['category_id'];
+		} else {
+			$query .= " AND articles.category_id != 0 ";
 		}
 		// tag
 		if (isset($_GET['tag_id'])) {
@@ -1527,7 +1538,6 @@
 		$query .= (!empty($article_id)) 
 			?  " AND articles.id = ".$article_id 
 			: " ORDER BY articles.id DESC LIMIT 0,1" ;
-		// echo $query;
 		$result = $conn->query($query);
 		$row = $result->fetch_assoc();
 		// if a redirect url has been set we redirect right here

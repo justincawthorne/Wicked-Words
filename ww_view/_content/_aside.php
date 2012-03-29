@@ -23,6 +23,8 @@
 
 	$authors_list 			= get_authors();
 	
+	$pages_list 			= get_pages_basic();
+	
 	$categories_list 		= get_categories();
 	
 	$categories_basic_list 	= get_categories_basic();
@@ -140,6 +142,7 @@
 	
 		$aside_snippet['authors_list'] 		= build_snippet('Authors',$authors_list);
 		$aside_snippet['authors_select'] 	= build_snippet('Authors',$authors_select_form);
+		$aside_snippet['pages_list'] 		= build_snippet('About this site',$pages_list);
 		$aside_snippet['categories_list'] 	= build_snippet('Categories',$categories_list);
 		$aside_snippet['categories_select'] = build_snippet('Categories',$categories_select_form);
 		$aside_snippet['tags_list'] 		= build_snippet('Tags',$tags_list);
@@ -161,6 +164,7 @@
 										$aside_snippet['categories_select'],
 										$aside_snippet['tags_select'],
 										$aside_snippet['months_select'],
+										$aside_snippet['pages_list'],
 										$aside_snippet['latest_articles'],
 										$aside_snippet['popular_articles'],
 										$aside_snippet['authors_list'],

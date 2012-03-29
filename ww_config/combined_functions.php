@@ -311,6 +311,7 @@
 				FROM articles 
 					LEFT JOIN categories ON articles.category_id = categories.id 
 				WHERE status = 'P'
+					AND articles.category_id != 0
 					AND date_uploaded <= UTC_TIMESTAMP()";
 		$query .= (!empty($where)) ? ' AND '.$where : '' ;
 		$query .= $order;
@@ -324,6 +325,42 @@
 				? WW_REAL_WEB_ROOT.'/'.date('Y/m/d',strtotime($row['date_uploaded'])).'/'.$row['url'].'/'
 				: WW_REAL_WEB_ROOT.'/'.$row['category_url'].'/'.$row['url'].'/';
 			$row['link'] = $link;
+			$data[] = $row;
+		}
+		$result->close();
+		return $data;		
+	}
+
+/**
+ * get_articles_basic
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+	function get_pages_basic($order = '') {
+		$conn = reader_connect();
+		$order = (!empty($order)) ? ' ORDER BY '.$order : ' ORDER BY date_uploaded DESC' ; 
+		$query = "SELECT
+					articles.id, 
+				 	articles.title, 
+					articles.url, 
+					articles.date_uploaded, 
+					'about' AS category_url
+				FROM articles 
+				WHERE status = 'P'
+					AND articles.category_id = 0
+					AND date_uploaded <= UTC_TIMESTAMP()";
+		$query .= $order;
+		$result = $conn->query($query);
+		$data = array();
+		while($row = $result->fetch_assoc()) { 
+			$row = stripslashes_deep($row);
+			// create links
+			$row['link'] = WW_REAL_WEB_ROOT.'/'.$row['category_url'].'/'.$row['url'].'/';
 			$data[] = $row;
 		}
 		$result->close();
@@ -377,7 +414,7 @@
 		if(empty($content)) {
 			return false;
 		}
-		$limit = (defined('WW_SESS')) ? 1 : 2 ;
+		$limit = (defined('WW_SESS')) ? 1 : 1 ;
 		if( (is_array($content)) && (count($content) < $limit) ) {
 			return false;
 		}
