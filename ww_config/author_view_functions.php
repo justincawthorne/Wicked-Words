@@ -499,7 +499,7 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 	}
 
 /**
- * build_write_form
+ * show_comment_form_admin
  * 
  * 
  * 
@@ -993,7 +993,25 @@ function show_admin_head($site_title, $page_title = '', $theme = 'desktop') {
 					<label for="seo_keywords">SEO Keywords</label>
 					<textarea name="seo_keywords" cols="40" rows="3" class="optional">'.$article_data['seo_keywords'].'</textarea>
 					<span class="note">(site keywords used if left blank)</span>
-				</p>
+				</p>';
+				
+				// redirect options - only available to non-draft articles
+				if($article_data['status'] != 'D') {
+					$article_data['redirect_code'] = (empty($article_data['redirect_code'])) ? '' : $article_data['redirect_code'] ;
+					$html .= '	
+					<p>
+						<label for="redirect_code">Redirect Code</label>
+						<input type="text" name="redirect_code" id="redirect_code" value="'.$article_data['redirect_code'].'"/>
+						<span class="note">(redirect code if article has been moved - 301 for permanent redirect (default), 307 for temporary redirect )</span>
+					</p>
+					<p>
+						<label for="redirect_url">Redirect URL</label>
+						<input type="text" name="redirect_url" id="redirect_url" value="'.$article_data['redirect_url'].'"/>
+						<span class="note">(new url that article is being redirected to)</span>
+					</p>';
+				}
+				
+			$html .= '	
 			</div>';
 		return $html;
 	}

@@ -712,10 +712,7 @@
 		$row = $result->fetch_assoc();
 		$row = stripslashes_deep($row);
 		// adjust times to local timezone if necessary
-		$row['date_ts'] = strtotime($row['date_uploaded']);
-		$offset = date('Z');
-		$row['local_date_ts'] = $row['date_ts']+$offset;
-		$row['local_date_uploaded'] = date('Y-m-d H:i:s',$row['local_date_ts']);
+		$row = parse_article_dates($row);
 		// process comments query
 		$comments = $comment_result->fetch_assoc();
 		$row['comment_count'] = $comments['total'];
@@ -889,11 +886,13 @@
 			$article_data = get_article_admin($article_id);
 			$article_data = stripslashes_deep($article_data);
 			// date fields - probably don't need these
+			/*
 			$article_data['day'] 	= date('d',$article_data['date_ts']);
 			$article_data['month'] 	= date('m',$article_data['date_ts']);
 			$article_data['year'] 	= date('Y',$article_data['date_ts']);
 			$article_data['hour'] 	= date('H',$article_data['date_ts']);
 			$article_data['minute'] = date('i',$article_data['date_ts']);
+			*/
 			// tags
 			$article_data['tags']			= get_article_tags_admin($article_id);
 			// attachments
@@ -1016,6 +1015,7 @@
 		if(isset($_POST['date_uploaded'])) {
 			$article_data['date_uploaded'] = $_POST['date_uploaded'];
 		} else {
+			// ensure gmt date is saved
 			$year 	= (empty($_POST['year'])) 	? gmdate('Y') : $_POST['year'] ;
 			$month 	= (empty($_POST['month'])) 	? gmdate('m') : $_POST['month'] ;
 			$day 	= (empty($_POST['day'])) 	? gmdate('d') : $_POST['day'] ;
@@ -1025,20 +1025,37 @@
 			$ts_uploaded = strtotime($year."-".$month."-".$day." ".$hour.":".$minute.":00");
 			$article_data['date_uploaded'] = gmdate('Y-m-d H:i:s', $ts_uploaded);
 			// just to avoid messy errors we'll resend the date/time variables again
+			/*
 			$article_data['year'] 	= $_POST['year'];
 			$article_data['month'] 	= $_POST['month'];
 			$article_data['day'] 	= $_POST['day'];
 			$article_data['hour'] 	= $_POST['hour'];
 			$article_data['minute'] = $_POST['minute'];
+			*/
 		}
 		
-		// date ammended
+		
+		// date amended
 		$article_data['date_amended'] = gmdate('Y-m-d H:i:s');
 		
 		// seo data
 		$article_data['seo_title'] = (isset($_POST['seo_title'])) ? clean_input($_POST['seo_title']) : '' ;
 		$article_data['seo_desc'] = (isset($_POST['seo_desc'])) ? clean_input($_POST['seo_desc']) : '' ;
 		$article_data['seo_keywords'] = (isset($_POST['seo_keywords'])) ? clean_input($_POST['seo_keywords']) : '' ;
+		$article_data['redirect_code'] = (isset($_POST['redirect_code'])) ? (int)($_POST['redirect_code']) : '' ;
+		$article_data['redirect_url'] = (isset($_POST['redirect_url'])) ? clean_input($_POST['redirect_url']) : '' ;
+		
+		// validate redirect url
+		if((!empty($_POST['redirect_url']))) {
+			if(validate_url($_POST['redirect_url']) === false) {
+				$article_data['error'][] = "Invalid redirect url entered: ".$_POST['redirect_url'];
+				$article_data['redirect_url'] = '';
+			} else {
+				$article_data['redirect_url'] = $_POST['redirect_url'];
+				// if redirect url is set then we automatically change status to archived
+				$article_data['status'] = 'A';
+			}			
+		}
 		
 		// comment settings
 		$article_data['comments_hide'] = ( (isset($_POST['comments_hide'])) && (!empty($_POST['comments_hide'])) ) ? 1 : 0 ;
@@ -1073,9 +1090,36 @@
 				return update_article($article_data);
 			}
 		} else {
-			$article_data['status'] =  'D';
+			// we need to return timezone corrected dates to avoid errors
+			$article_data = parse_article_dates($article_data);
 			return stripslashes_deep($article_data);
 		}
+	}
+
+/**
+ * parse_article_dates
+ * 
+ * takes an article date field and splits it into day, month, year etc
+ * also converts for timezone settings
+ * 
+ * 
+ * 
+ * 
+ */
+
+	function parse_article_dates($article_data) {
+		// adjust times to local timezone if necessary
+		$article_data['date_ts'] = strtotime($article_data['date_uploaded']);
+		$offset = date('Z');
+		$article_data['local_date_ts'] = $article_data['date_ts']+$offset;
+		$article_data['local_date_uploaded'] = date('Y-m-d H:i:s',$article_data['local_date_ts']);
+		// split into component date fields - probably don't need these
+		$article_data['day'] 	= date('d',$article_data['date_ts']);
+		$article_data['month'] 	= date('m',$article_data['date_ts']);
+		$article_data['year'] 	= date('Y',$article_data['date_ts']);
+		$article_data['hour'] 	= date('H',$article_data['date_ts']);
+		$article_data['minute'] = date('i',$article_data['date_ts']);
+		return $article_data;
 	}
 
 /**
@@ -1148,7 +1192,7 @@
 	}
 
 /**
- * update_article_data
+ * update_article
  * 
  * 
  * 
@@ -1172,6 +1216,8 @@
 					seo_title 		= '".$conn->real_escape_string($post_data['seo_title'])."', 
 					seo_desc 		= '".$conn->real_escape_string($post_data['seo_desc'])."', 
 					seo_keywords 	= '".$conn->real_escape_string($post_data['seo_keywords'])."',
+					redirect_code 	= '".(int)$post_data['redirect_code']."',
+					redirect_url 	= '".$conn->real_escape_string($post_data['redirect_url'])."',
 					comments_disable 	= ".(int)$post_data['comments_disable'].",
 					comments_hide 		= ".(int)$post_data['comments_hide']."
 					WHERE id = ".(int)$post_data['id'];

@@ -102,4 +102,4 @@
 	# otherwise use the following which filters out filenames
 	RewriteRule ^/?([^\.]+)?$ ww_view/assembler.php [L]
 	
-AddHandler php5-script .php
+AddHandler php-legacy .php
