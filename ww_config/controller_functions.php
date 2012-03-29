@@ -331,6 +331,9 @@
 			case $urldata[0] == 'about':
 				$_GET['category_url'] = $urldata[0];
 				$_GET['category_id'] = 0;
+				if(!empty($urldata[1]) ) {
+					$_GET['article_url'] = $urldata[1];
+				}
 			break;
 
 			//	downloads (e.g. www.domain.com/download/mp3/sample/ OR www.domain.com/download/12/)
