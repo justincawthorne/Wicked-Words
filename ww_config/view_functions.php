@@ -275,12 +275,12 @@ function insert_css($theme = '/default') {
 	
 	// if a dedicated 'page name' css file exists
 	if(file_exists(WW_ROOT.$theme_folder.'/'.$_GET['page_name'].'.css')) {
-		$stylesheet_path .= '&page_name='.$_GET['page_name'];
+		$stylesheet_path .= '&amp;page_name='.$_GET['page_name'];
 	}
 
 	// if a dedicated category css file exists
 	if( (isset($_GET['category_url'])) && (file_exists(WW_ROOT.$theme_folder.'/'.$_GET['category_url'].'.css')) ) {
-		$stylesheet_path .= '&category_url='.$_GET['category_url'];	
+		$stylesheet_path .= '&amp;category_url='.$_GET['category_url'];	
 	}
 
 	// build css link
@@ -1724,7 +1724,7 @@ function insert_favicon($theme = 'default') {
 		$form .= '				
 				</select>
 				<noscript>
-				<div><input type="submit" value="Go" /></div>
+				<span><input type="submit" value="Go" /></span>
 				</noscript>
 				</p>
 			</form>';

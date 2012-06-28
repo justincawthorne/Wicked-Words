@@ -304,10 +304,12 @@
 		$order = (!empty($order)) ? ' ORDER BY '.$order : ' ORDER BY date_uploaded DESC' ; 
 		$query = "SELECT
 					articles.id, 
-				 	articles.title, 
+				 	articles.title,
+				 	articles.summary,
 					articles.url, 
 					articles.date_uploaded, 
-					categories.url AS category_url
+					categories.url AS category_url,
+					categories.title AS category_title
 				FROM articles 
 					LEFT JOIN categories ON articles.category_id = categories.id 
 				WHERE status = 'P'
