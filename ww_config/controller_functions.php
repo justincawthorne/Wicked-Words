@@ -2092,7 +2092,7 @@
 		$string = str_replace("><", "> <", $string);	// add spaces between html tags
 		$string = str_replace('&nbsp;',' ',$string);
 		$string = strip_tags($string);					// strip html tags
-		$string = eregi_replace(" +", " ", $string);	// get rid of multiple spaces as a precaution
+		$string = preg_replace('/\s+/', ' ', $string);	// get rid of multiple spaces as a precaution
 		$string = trim($string);						// remove any spaces from the ends
 		return $string;			
 	}
