@@ -53,9 +53,8 @@
 		$conn = author_connect();
 		$custom_update = "
 			UPDATE settings SET 
-				property_name='".$conn->real_escape_string($_POST['property_name'])."', 
 				property_value='".$conn->real_escape_string($_POST['property_value'])."' 
-			WHERE id = ".(int)$_POST['id'];
+			WHERE property_name LIKE '".$conn->real_escape_string($_POST['property_name'])."'";
 		$custom_result = $conn->query($custom_update);
 		if(!$custom_result) {
 			$messages = $conn->error;
@@ -403,7 +402,7 @@
 	}
 	
 	// add custom tab
-	
+
 	$main_content .= '
 		<div id="tab_custom">';
 			if(empty($custom_data)) {
@@ -412,20 +411,19 @@
 			} else {
 				$main_content .= '
 				<h2>custom configurations</h2>
-				<p>any custom settings you have added are listed below - you can use this page to edit or delete these settings</p>';
+				<p>any custom settings you have added are listed below - you can use this page to edit (value only) or delete these settings</p>';
 				foreach($custom_data as $custom_header => $custom) {
 					$main_content .= '
 					<h4>'.$custom_header.'</h4>';
 					foreach($custom as $custom_setting) {
 						$main_content .= '
-						<form id="custom_setting_'.$custom_setting['id'].'_form" 
+						<form id="custom_setting_'.$custom_setting['property_name'].'_form" 
 							method="post" 
 							action="'.$action_url.'#tab_custom" 
 							class="settings_form">
 						<p>
-							<input name="property_name" value="'.$custom_setting['property_name'].'" type="text" style="font-weight: bold; color: #847964;text-align: right;"/>
+							<input name="property_name" readonly value="'.$custom_setting['property_name'].'" type="text" style="font-weight: bold; color: #847964;text-align: right;"/>
 							<input name="property_value" value="'.$custom_setting['property_value'].'" type="text"/>
-							<input name="id" value="'.$custom_setting['id'].'" type="hidden"/>
 							<input name="update_custom_setting" value="update" type="submit"/>
 							<input name="delete_custom_setting" value="delete" type="submit"/>
 						</p>

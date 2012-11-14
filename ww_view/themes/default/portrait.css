@@ -1,0 +1,32 @@
+#aside {
+
+}
+#outer_wrapper {
+	border: none;
+}
+
+#header_text small {
+
+}
+
+/* other structure */
+
+#page_header {
+    margin: 10px;
+}
+
+/* articles */
+
+.article_wrapper {
+    margin: 10px;
+}
+#comments_wrapper {
+    margin: 10px;
+}
+#comment_form_wrapper {
+    margin: 10px;
+}
+
+.hide-portrait {
+    display: none;
+}

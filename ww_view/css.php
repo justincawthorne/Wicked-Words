@@ -68,7 +68,41 @@ if(!empty($config['cache']['caching_on'])) {
 		$css .= '****************************/'."\n\n";
 		$css .= file_get_contents(WW_ROOT.$theme_folder.'/'.$_GET['category_url'].'.css');
 	}
+    
+    // media queries - tablet, portrait, mobile
+
+	// tablet styles
 	
+	if (file_exists(WW_ROOT.$theme_folder.'/tablet.css')) {
+		$css .= "\n\n".'@media only screen and (max-width : 980px) {';
+        $css .= "\n\n".'/***************************'."\n";
+		$css .= "\t".'tablet styles'."\n";
+		$css .= '****************************/'."\n\n";
+		$css .= file_get_contents(WW_ROOT.$theme_folder.'/tablet.css');
+        $css .= "\n\n".'}';
+	}
+
+	// tablet portrait styles
+	
+	if (file_exists(WW_ROOT.$theme_folder.'/portrait.css')) {
+		$css .= "\n\n".'@media only screen and (max-width : 768px) {';
+        $css .= "\n\n".'/***************************'."\n";
+		$css .= "\t".'portrait styles'."\n";
+		$css .= '****************************/'."\n\n";
+		$css .= file_get_contents(WW_ROOT.$theme_folder.'/portrait.css');
+        $css .= "\n\n".'}';
+	}
+    
+   	// mobile styles
+	
+	if (file_exists(WW_ROOT.$theme_folder.'/mobile.css')) {
+		$css .= "\n\n".'@media only screen and (max-width : 480px) {';
+        $css .= "\n\n".'/***************************'."\n";
+		$css .= "\t".'mobile styles'."\n";
+		$css .= '****************************/'."\n\n";
+		$css .= file_get_contents(WW_ROOT.$theme_folder.'/mobile.css');
+        $css .= "\n\n".'}';
+	}	
 	echo $css;
 	
 if(!empty($config['cache']['caching_on'])) {

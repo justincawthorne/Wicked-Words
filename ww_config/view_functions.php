@@ -251,7 +251,7 @@ function insert_css($theme = '/default') {
 	$theme_folder = "/ww_view/themes".$theme;
 	
 	// smartphone user - don't bother with the other stylesheets
-	
+	/*
 	if(detect_smartphone() == true) {
 		
 		if (file_exists(WW_ROOT.$theme_folder.'/iphone.css')) {
@@ -265,7 +265,7 @@ function insert_css($theme = '/default') {
 		}
 		return $css;
 	}
-	
+	*/
 	$css = '
 	<!-- css -->';
 	
@@ -308,13 +308,13 @@ function insert_css($theme = '/default') {
 		$css .= '
 	<link rel="stylesheet" media="print" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/print.css" />'."\n";
 	}
-	
+	/*
 	// pda
 	if (file_exists(WW_ROOT.$theme_folder.'/pda.css')) {
 		$css .= '
 	<link rel="stylesheet" media="handheld" type="text/css" href="'.WW_REAL_WEB_ROOT.$theme_folder.'/pda.css" />'."\n";
 	}
-	
+	*/
 	return $css;	
 }
 

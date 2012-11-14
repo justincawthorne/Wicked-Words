@@ -1,0 +1,48 @@
+#outer_wrapper {
+	border: none;
+    margin: 0 auto;
+	width: 100%;
+}
+#inner_wrapper,
+#content_wrapper,
+#footer {
+	width: 100%;
+}
+
+#main_content {
+	width: 65%;
+}
+#aside {
+	float:right;
+	width: 24%;
+}
+#aside_inner {
+	padding: 0px;
+}
+#header_text small {
+
+}
+
+/* other structure */
+
+#page_header {
+    margin: 10px;
+}
+
+/* articles */
+
+.article_wrapper {
+    margin: 10px;
+}
+#comments_wrapper {
+    margin: 10px;
+}
+#comment_form_wrapper {
+    margin: 10px;
+}
+
+
+
+.hide-tablet {
+    display: none;
+}
