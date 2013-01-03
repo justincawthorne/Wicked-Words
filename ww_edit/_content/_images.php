@@ -98,7 +98,7 @@
 
 		$image_delete = delete_image($_POST['filename']);
 		if(!empty($image_delete)) {
-			header('Location: '.WW_WEB_ROOT.'/ww_edit/index.php?page_name=images');
+			header('Location: '.$_SERVER["PHP_SELF"].'?page_name=images');
 		}
 
 	}
@@ -108,7 +108,7 @@
 	if( (isset($_POST['cancel_delete_image'])) && ($_POST['cancel_delete_image'] == 'No') ) {
 
 		$image_id = (int)$_GET['image_id'];
-		header('Location: '.WW_WEB_ROOT.'/ww_edit/index.php?page_name=images&image_id='.$image_id);
+		header('Location: '.$_SERVER["PHP_SELF"].'?page_name=images&image_id='.$image_id);
 
 	}
 
@@ -460,7 +460,7 @@
 			<div class="gallery_item">
 				<div class="thumb'.$notfound.'">
 					<a href="'.$_SERVER["PHP_SELF"].'?page_name=images&amp;image_id='.$img['id'].'">
-					<img src="http://dev.wickedwords.org/ww_files/images/thumbs/'.$img['filename'].'"/>
+					<img src="'.WW_WEB_ROOT.'/ww_files/images/thumbs/'.$img['filename'].'"/>
 					</a>
 				</div>
 				<div class="caption">

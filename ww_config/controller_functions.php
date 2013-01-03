@@ -1966,7 +1966,7 @@
 			if(empty($form_data['approved'])) {
 				$config = get_settings();
 				// get details
-				$edit_link = WW_WEB_ROOT.'/ww_edit/index.php?page_name=comments&comment_id='.$new_id;
+				$edit_link = WW_WEB_ROOT.'/ww_edit/admin.php?page_name=comments&comment_id='.$new_id;
 				// compose mail
 				require(WW_ROOT.'/ww_edit/_snippets/class.phpmailer-lite.php');
 				$mail = new PHPMailerLite();
