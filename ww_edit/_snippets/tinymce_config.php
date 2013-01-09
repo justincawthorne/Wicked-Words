@@ -9,7 +9,7 @@ echo '
 		width : "532",
 		cleanup: true,
 		content_css : "'.WW_REAL_WEB_ROOT.'/ww_edit/themes/'.$theme.'/tinymce.css",
-		extended_valid_elements : "small",
+		extended_valid_elements : "small,iframe[src|title|width|height|allowfullscreen|frameborder]",
 		
 		// theme and button settings
 		theme : "advanced",
