@@ -1902,7 +1902,10 @@
 			$form_data['author_email'] 	= $article['author_email'];
 			$form_data['author_name'] 	= $article['author_name'];			
 		}
-		
+		// stripslashes
+		if (get_magic_quotes_gpc()) {
+			$form_data = stripslashes_deep($form_data);
+		}
 		// clear comment session
 		unset($_SESSION['comment_data']);		
 		if(!empty($form_data['error'])) {
@@ -1914,7 +1917,7 @@
 	}
 
 /**
- * get_article_attachments
+ * insert_comment
  * 
  * 
  * 

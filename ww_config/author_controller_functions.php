@@ -1424,7 +1424,7 @@
 		$string = strip_tags($string);				// strip html
 		$string = preg_replace('/[^a-zA-Z0-9\s]/', '', $string);  
 												// Remove all punctuation
-		$string = ereg_replace(" +", " ", $string);	// Remove multiple spaces
+		$string = preg_replace('/\s\s+/', ' ', $string);	// Remove multiple spaces
 		$string = str_replace(' ', '-', $string);	// Convert spaces to hyphens
 		return $string;		
 	}

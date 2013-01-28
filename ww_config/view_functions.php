@@ -1248,9 +1248,9 @@ function insert_favicon($theme = 'default') {
 					<span class="comment_date"> '.date('d M Y',strtotime($comment['date_uploaded'])).'</span>
 					<span class="comment_time"> '.date('H:i',strtotime($comment['date_uploaded'])).'</span>
 				</p>';
-					echo (!empty($comment['title'])) ? '<p class="comment_title">'.$comment['title'].'</p>' : '' ;
+					echo (!empty($comment['title'])) ? '<p class="comment_title">'.stripslashes($comment['title']).'</p>' : '' ;
 					echo '
-				<p class="comment_body">'.nl2br($comment['body']).'</p>
+				<p class="comment_body">'.nl2br(stripslashes($comment['body'])).'</p>
 			</div>';
 			}
 		}
