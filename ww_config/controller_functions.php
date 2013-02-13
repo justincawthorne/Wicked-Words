@@ -1630,7 +1630,8 @@
 					poster_name, poster_link, poster_email 
 				FROM comments
 				WHERE approved = 1
-				AND article_id = '.(int)$id;
+				AND article_id = '.(int)$id.'
+                ORDER BY date_uploaded ASC';
 		$result = $conn->query($query);
 		$data = array();
 		while($row = $result->fetch_assoc()) { 
